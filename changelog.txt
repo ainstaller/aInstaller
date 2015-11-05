@@ -1,0 +1,18 @@
+ChangeLog
+
+
+v1.0.0.7 : 11/5/2015 
+- aInstaller now can find TF2 inside different steam libraries
+- changelog is now available at home page
+
+v1.0.0.5 : 11/4/2015 
+- settings now are saved at "%userprofile%\My Documents\aInstaller\" so you won't lose it after updating
+
+v1.0.0.2 : 11/4/2015 
+- fixed crosshair damage flash not being inserTed
+
+v1.0.0.1 : 11/4/2015
+- fixed crosshair maximum size
+
+v1.0.0.0 : 11/4/2015
+- Initial version
