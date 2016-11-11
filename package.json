@@ -1,0 +1,24 @@
+{
+  "name": "ainstaller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/UnnoTed/ainstaller",
+  "keywords": [
+    "ainstaller"
+  ],
+  "author": "GitHub",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-register": "^6.18.0",
+    "electron": "^1.4.1",
+    "electron-compilers": "^4.0.5"
+  },
+  "dependencies": {
+    "electron-compile": "^4.0.2",
+    "feedparser": "^1.1.5"
+  }
+}

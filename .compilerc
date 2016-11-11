@@ -1,0 +1,6 @@
+{
+  "application/javascript": {
+    "presets": ["es2015"],
+    "sourceMaps": "inline"
+  }
+}

@@ -1,0 +1,13 @@
+<div id="page-dashboard" class="container">
+  <div class="news">
+
+    <!-- articles -->
+    <div ng:repeat="article in dashboard.news" class="item">
+      <h4><a href="{{:: article.Links[0].Href }}">{{:: article.Title }}</a></h4>
+      <div class="description" ng:bind:html="article.Description">
+      </div>
+    </div>
+    <!-- end: articles -->
+
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<div id="page-crosshairs" class="container">
+  <div class="crosshairs" ng:hide="crosshairs.creating">
+
+    <div class="crosshair" ng:repeat="crosshair in user.crosshairs">
+      {{:: crosshair }}
+    </div>
+
+    <div class="button" ng:click="crosshairs.new()">
+      New Crosshair
+    </div>
+  </div>
+
+  <!-- new -->
+  <div class="crosshairs new" ng:show="crosshairs.creating">
+    <div class="menu page full-width">
+      <!-- crosshair -->
+      <div class="item">
+        <span class="label">Crosshair</span>
+        <div class="text crosshair" id="crosshair_list_button">
+          {{ crosshairs.new.crosshair || '#' }}
+        </div>
+      </div>
+
+      <!-- enabled -->
+      <div class="item check" ng:click="crosshairs.new.enabled = !crosshairs.new.enabled">
+        <span class="label">Enabled</span>
+        <div class="icon">
+          <i ng:class="{'flaticon-check52': crosshairs.new.enabled, 'flaticon-close47': !crosshairs.new.enabled}"></i>
+        </div>
+      </div>
+
+      <!-- size -->
+      <div class="item text">
+        <span class="label">Size</span>
+        <div class="text">20</div>
+      </div>
+
+      <!-- color -->
+      <div class="item color">
+        <span class="label">Color</span>
+        <div class="color">
+          <input class="apicker" onChange="crosshairs:onChange" onMove="crosshairs:onMove" />
+        </div>
+      </div>
+
+      <!-- outline -->
+      <div class="item check" ng:click="crosshairs.new.outline = !crosshairs.new.outline">
+        <span class="label">Outline</span>
+        <div class="icon">
+          <i ng:class="{'flaticon-check52': crosshairs.new.outline, 'flaticon-close47': !crosshairs.new.outline}"></i>
+        </div>
+      </div>
+
+      <!-- anti aliasing -->
+      <div class="item check" ng:click="crosshairs.new.antialiasing = !crosshairs.new.antialiasing">
+        <span class="label">Anti-aliasing</span>
+        <div class="icon">
+          <i ng:class="{'flaticon-check52': crosshairs.new.antialiasing, 'flaticon-close47': !crosshairs.new.antialiasing}"></i>
+        </div>
+      </div>
+
+      <!-- damage flash -->
+      <div class="item check" ng:click="crosshairs.new.dmgflash = !crosshairs.new.dmgflash">
+        <span class="label">Damage Flash</span>
+        <div class="icon">
+          <i ng:class="{'flaticon-check52': crosshairs.new.dmgflash, 'flaticon-close47': !crosshairs.new.dmgflash}"></i>
+        </div>
+      </div>
+
+      <!-- damage flash color -->
+      <div class="item" ng:show="crosshairs.new.dmgflash">
+        <span class="label">Damage Flash Color</span>
+      </div>
+
+      <!-- save -->
+      <div class="item icon right">
+        <span class="label">Save</span>
+        <div class="icon">
+          <i class="flaticon-technology"></i>
+        </div>
+      </div>
+    </div>
+
+    <modal id="crosshairs_choose" trigger="#crosshair_list_button">
+      <div class="crosshair container" ng:repeat="crosshair in crosshairs.list" ng:click="crosshairs.setNewCrosshair(crosshair); vm.hide()">
+        {{:: crosshair }}
+      </div>
+    </modal>
+  </div>
+</div>

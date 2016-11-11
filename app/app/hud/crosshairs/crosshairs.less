@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'crosshair';
+  src: url('../assets/font/KnucklesCrosses.ttf') format('truetype');
+}
+
+.crosshair {
+  font-family: 'crosshair' !important;
+  width: 100px;
+  height: 100px;
+
+  color: #fff;
+  text-align: center;
+
+  font-size: 100px;
+
+  &.container {
+    cursor: pointer;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    margin: 5px;
+    float: left;
+
+    &:hover {
+      color: $yellow;
+    }
+  }
+}
