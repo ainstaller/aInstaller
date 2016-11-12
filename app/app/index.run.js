@@ -5,7 +5,7 @@ export function runBlock ($rootScope, $log) {
   $log.debug('runBlock end');
 
   $rootScope.colorpicker = {
-    preferredFormat: 'rgba',
+    preferredFormat: 'rgb',
     showAlpha: true,
     showInput: true,
     allowEmpty: false,
@@ -47,8 +47,5 @@ export function runBlock ($rootScope, $log) {
     } else {
       $rootScope.totalCrosshairs = 0;
     }
-
-
-    //localStorage.setItem('crosshairs', JSON.stringify($rootScope.crosshairs));
   }, true);
 }
