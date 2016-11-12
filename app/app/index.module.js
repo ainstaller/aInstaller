@@ -16,7 +16,7 @@ import { ModalDirective } from './app/components/modal/modal.directive';
 // factory
 import { HudCrosshairsFactory } from './app/hud/crosshairs/crosshairs.factory';
 
-angular.module('gui', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource', 'ui.router', 'angular-toasty'])
+angular.module('gui', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMessages', 'ngAria', 'ngResource', 'ui.router', 'angular-toasty', 'angularSpectrumColorpicker'])
   .config(config)
   .config(routerConfig)
   .run(runBlock)

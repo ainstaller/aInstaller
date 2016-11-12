@@ -32,7 +32,8 @@
       <div class="hud-layer">
         <div class="item crosshair" ng:repeat="(name, crosshair) in crosshairs" 
              ng:if="crosshair.enabled && name != 'list' && name != '' && name != 'current' && name != 'new'"
-             ng:click="editCrosshair(name)" ng:class="{outline: crosshair.outline}">
+             ng:click="editCrosshair(name)" ng:class="{outline: crosshair.outline}"
+             ng:style="{color: crosshair.color}">
           {{ crosshair.crosshair }}
         </div>
       </div>
@@ -70,6 +71,7 @@
     <script src="./bower_components/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
     <script src="./bower_components/spectrum/spectrum.js"></script>
     <script src="./bower_components/angular-toasty/dist/angular-toasty.js"></script>
+    <script src="./bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
