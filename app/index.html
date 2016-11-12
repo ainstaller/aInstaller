@@ -18,6 +18,7 @@
 
     <!-- build:css({.tmp/serve,src}) styles/app.css -->
     <!-- inject:css -->
+    <link rel="stylesheet" type="text/css" href="./app/icons.less">
     <link rel="stylesheet" href="./app/index.less">
     <!-- endinject -->
     <!-- endbuild -->
@@ -28,6 +29,13 @@
     <![endif]-->
 
     <div class="content">
+      <div class="hud-layer">
+        <div class="item crosshair" ng:repeat="(name, crosshair) in crosshairs" 
+             ng:if="crosshair.enabled && name != 'list' && name != '' && name != 'current' && name != 'new'"
+             ng:click="editCrosshair(name)" ng:class="{outline: crosshair.outline}">
+          {{ crosshair.crosshair }}
+        </div>
+      </div>
       <div class="sidebar" ng:include="'app/sidebar/sidebar.html'"></div>
       <div class="page full-width" ui:view></div>
       <a:video data-property="{videoURL:'https://www.youtube.com/watch?v=3YBsmwZi56s', showControls:false, quality:'hd1080', autoPlay:true, mute:true, startAt:0, opacity:1}" />
@@ -58,7 +66,7 @@
     <script src="./bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="./bower_components/malarkey/dist/malarkey.min.js"></script>
     <script src="./bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
-    <script src="./bower_components/moment/moment.js"></script>
+    <!--<script src="./bower_components/moment/moment.js"></script>-->
     <script src="./bower_components/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
     <script src="./bower_components/spectrum/spectrum.js"></script>
     <script src="./bower_components/angular-toasty/dist/angular-toasty.js"></script>

@@ -1,8 +1,8 @@
-<div id="page-hud" class="container">
-  <div class="menu page full-width">
+<div id="page-hud" class="container" ng:init="hideHudMenu = false">
+  <div class="menu page full-width" ng:hide="hideHudMenu">
 
     <!-- crosshairs -->
-    <a class="item check" ui:sref="hud.crosshairs">
+    <a class="item check" ui:sref="hud.crosshairs" ng:click="hideHudMenu = true">
       <span class="label">Crosshairs</span>
       <div class="icon">
         <i class="flaticon-crosshair14"></i>

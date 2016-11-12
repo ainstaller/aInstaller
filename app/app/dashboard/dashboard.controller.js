@@ -13,7 +13,7 @@ export class DashboardController {
     var self = this;
     let newsURL = 'http://steamcommunity.com/groups/ahud/rss';
     this.$http.get(newsURL).then(function(response) {
-      console.log(response.data);
+      //console.log(response.data);
       //self.onGetNews(response, self);
     }, this.onErr);
 

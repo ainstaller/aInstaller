@@ -2,9 +2,9 @@
 
 @import './reset.less';
 @import './font.less';
-@import './icons.less';
 @import './sidebar/sidebar.less';
 @import './components/modal/modal.less';
+@import './hud/crosshairs/crosshairs.less';
 
 .browsehappy {
   margin: 0.2em 0;
@@ -73,6 +73,15 @@ body {
           margin-top: 18px;
           font-size: 50px;
         }
+
+        > input {
+          margin-top: 18px;
+          font-size: 50px;
+          width: 80px;
+          background: transparent;
+          border: none;
+          text-align: center;
+        }
       }
 
       &.check, &.text, &.icon {
@@ -131,4 +140,32 @@ body {
 
 .mb_YTPBar {
   display: none !important;
+}
+
+.mbYTP_wrapper {
+  z-index: -2 !important;
+}
+
+.hud-layer {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding: 0;
+  border: none;
+  margin: 0;
+
+  .crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    &.outline {
+      -webkit-text-stroke-width: 2px;
+      -webkit-text-stroke-color: black;
+    }
+  }
 }

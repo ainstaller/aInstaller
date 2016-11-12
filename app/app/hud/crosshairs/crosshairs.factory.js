@@ -5,7 +5,6 @@ class factory {
     'ngInject';
 
     this.$rootScope = $rootScope;
-
     this.list = '#$%123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]abcdefghijklmnopqrstuvwxyz'.split('');
 
     return {
@@ -14,8 +13,8 @@ class factory {
   }
 
   listen(onChange, onMove) {
-    var changed = this.$rootScope.$on('crosshairs:onChange', onChange);
-    var moved = this.$rootScope.$on('crosshairs:onMove', onMove);
+    var changed = this.$rootScope.$on('crosshairs:onColorChange', onChange);
+    var moved = this.$rootScope.$on('crosshairs:onColorMove', onMove);
 
     return {
       changed: changed,
