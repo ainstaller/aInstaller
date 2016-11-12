@@ -5,25 +5,25 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
       url: '/',
       templateUrl: 'app/dashboard/dashboard.html',
       controller: 'DashboardController',
-      controllerAs: 'dashboard'
+      //controllerAs: 'dashboard'
     })
     .state('hud', {
       url: '/hud',
       templateUrl: 'app/hud/hud.html',
       controller: 'HudController',
-      controllerAs: 'hud'
+      //controllerAs: 'hud'
     })
     .state('hud.crosshairs', {
       url: '/crosshairs',
       templateUrl: 'app/hud/crosshairs/crosshairs.html',
       controller: 'HudCrosshairsController',
-      controllerAs: 'crosshairs'
+      //controllerAs: 'crosshairs'
     })
     .state('settings', {
       url: '/settings',
       templateUrl: 'app/settings/settings.html',
       controller: 'SettingsController',
-      controllerAs: 'settings'
+      //controllerAs: 'settings'
     });
 
   $urlRouterProvider.otherwise('/');
