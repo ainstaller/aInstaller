@@ -2,7 +2,7 @@
 
 <div class="menu">
   <!-- dashboard -->
-  <a ui:sref="dashboard" class="item">
+  <a ui:sref="dashboard" class="item" ng:hide="editMode">
     <span class="label">Dashboard</span>
     <div class="icon">
       <i class="flaticon-bed24"></i>
@@ -10,7 +10,7 @@
   </a>
 
   <!-- hud -->
-  <a ui:sref="hud" class="item">
+  <a ui:sref="hud" class="item" ng:hide="editMode">
     <span class="label">Hud</span>
     <div class="afont">
       a
@@ -18,10 +18,26 @@
   </a>
 
   <!-- settings -->
-  <a ui:sref="settings" class="item">
+  <a ui:sref="settings" class="item" ng:hide="editMode">
       <span class="label">Settings</span>
     <div class="icon">
       <i class="flaticon-gear"></i>
+    </div>
+  </a>
+
+  <!-- save -->
+  <a class="item" ng:show="editMode" ng:click="sendEvent('save')">
+    <span class="label">Save</span>
+    <div class="icon">
+      <i class="flaticon-technology"></i>
+    </div>
+  </a>
+
+  <!-- cancel -->
+  <a class="item" ng:show="editMode" ng:click="sendEvent('cancel')">
+    <span class="label">Cancel</span>
+    <div class="icon">
+      <i class="flaticon-close47"></i>
     </div>
   </a>
 </div>
