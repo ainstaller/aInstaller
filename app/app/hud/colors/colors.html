@@ -1,0 +1,47 @@
+<div id="page-colors" class="container">
+  <div class="menu page full-width">
+    <!-- select -->
+    <div class="item select auto">
+      <span class="label">Hud Element</span>
+      <select ng:model="color.current">
+        <option value="">Choose a element!</option>
+        <option value="health">Health</option>
+        <option value="ammo">Ammo</option>
+        <option value="ammo_reserve">Reserve Ammo</option>
+      </select>
+    </div>
+
+    <!-- color -->
+    <div ng:show="color.current" class="item color">
+      <span class="label">Color</span>
+      <div class="color">
+        <input spectrum-colorpicker options="colorpicker" ng:model="color.color" />
+      </div>
+    </div>
+
+    <!-- save -->
+    <div ng:show="color.current" class="item check right" ng:click="sendEvent('save')">
+      <span class="label">Save</span>
+      <div class="icon">
+        <i class="flaticon-technology"></i>
+      </div>
+    </div>
+
+    <!-- cancel -->
+    <div ng:show="color.current" class="item check right" ng:click="sendEvent('cancel')">
+      <span class="label">Cancel</span>
+      <div class="icon">
+        <i class="flaticon-close47"></i>
+      </div>
+    </div>
+
+     <!-- reset -->
+    <div ng:show="color.current" class="item check right" ng:click="sendEvent('reset')">
+      <span class="label">Reset</span>
+      <div class="icon">
+        <i class="flaticon-rubbish-bin"></i>
+      </div>
+    </div>
+
+  </div>
+</div>

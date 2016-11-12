@@ -30,13 +30,25 @@
 
     <div class="content">
       <div class="hud-layer">
+        <!-- crosshair -->
         <div class="item crosshair" ng:repeat="(name, crosshair) in crosshairs" 
              ng:if="crosshair.enabled && name != 'list' && name != '' && name != 'current' && name != 'new'"
              ng:click="editCrosshair(name)" ng:class="{outline: crosshair.outline}"
-             ng:style="{color: crosshair.color, 'font-size': 5.54400*crosshair.size, width: 4.2*crosshair.size, height: 4.2*crosshair.size }">
+             ng:style="{color: crosshair.color, 'font-size': (crosshairScale*1.32)*crosshair.size, width: crosshairScale*crosshair.size, height: crosshairScale*crosshair.size }">
+             <!-- crosshair's font-size is 132% (so it can be centered) of 4.2 which is the scale that i think that it's similar to the game -->
           {{ crosshair.crosshair }}
         </div>
+
+        <!-- health -->
+        <div class="health afont ashadow" ng:style="{color: colors.health.color}">200</div>
+
+        <!-- ammo -->
+        <div class="ammo">
+          <span class="main-ammo afont ashadow" ng:style="{color: colors.ammo.color}">4</span>
+          <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}">20</span>
+        </div>
       </div>
+
       <div class="sidebar" ng:include="'app/sidebar/sidebar.html'"></div>
       <div class="page full-width" ui:view></div>
       <a:video data-property="{videoURL:'https://www.youtube.com/watch?v=3YBsmwZi56s', showControls:false, quality:'hd1080', autoPlay:true, mute:true, startAt:0, opacity:1}" />

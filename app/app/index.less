@@ -43,6 +43,10 @@ body {
     padding: 10px;
 
     > .item {
+      &.auto {
+        width: auto;
+      }
+
       width: 100px;
       height: 100px;
 
@@ -94,6 +98,21 @@ body {
             font-size: 50px;
           }
         } 
+      }
+
+      &.select {
+        > select {
+          color: white;
+          border-radius: 4px;
+          padding: 41px;
+          border: none;
+          background: rgba(0, 0, 0, 0.19);
+
+          > option {
+            background: #000;
+            color: white;
+          }
+        }
       }
 
       &.btn {
@@ -166,6 +185,51 @@ body {
     &.outline {
       -webkit-text-stroke-width: 2px;
       -webkit-text-stroke-color: black;
+    }
+  }
+
+  @top: 100%;
+  @horizontal-space: 700px;
+  @vertical-space: 25%;//400px;
+  @font-size: 100px;
+
+  .health {
+    font-size: @font-size;
+    position: absolute;
+    left: 50%;
+    top: @top;
+    transform: translate(-50%, -50%);
+    padding-right: @horizontal-space;
+    padding-bottom: @vertical-space;
+    color: white;
+  }
+
+  .ammo {
+    width: 153px;
+    font-size: @font-size;
+    position: absolute;
+    left: 50%;
+    top: @top;
+    transform: translate(-50%, -50%);
+
+    padding-left: @horizontal-space;
+    padding-bottom: @vertical-space;
+
+    > * {
+      display: inline-block;
+    }
+
+    .main-ammo {
+      color: white;
+    }
+
+    .reserve-ammo {
+      font-size: @font-size/2;
+      color: #01bcfe;
+      margin-top: -20px;
+      position: relative;
+      top: -15px;
+      left: -15px;
     }
   }
 }

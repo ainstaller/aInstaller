@@ -19,6 +19,11 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
       controller: 'HudCrosshairsController',
       //controllerAs: 'crosshairs'
     })
+    .state('hud.colors', {
+      url: '/colors',
+      templateUrl: 'app/hud/colors/colors.html',
+      controller: 'HudColorsController',
+    })
     .state('settings', {
       url: '/settings',
       templateUrl: 'app/settings/settings.html',

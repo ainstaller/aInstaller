@@ -6,6 +6,7 @@ import { runBlock } from './app/index.run';
 import { DashboardController } from './app/dashboard/dashboard.controller';
 import { HudController } from './app/hud/hud.controller';
 import { HudCrosshairsController } from './app/hud/crosshairs/crosshairs.controller';
+import { HudColorsController } from './app/hud/colors/colors.controller';
 import { SettingsController } from './app/settings/settings.controller';
 
 // directives
@@ -23,6 +24,7 @@ angular.module('gui', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMes
   .controller('DashboardController', DashboardController)
   .controller('HudController', HudController)
   .controller('HudCrosshairsController', HudCrosshairsController)
+  .controller('HudColorsController', HudColorsController)
   .factory('HudCrosshairsFactory', HudCrosshairsFactory)
   .controller('SettingsController', SettingsController)
   .directive('apicker', ColorPickerDirective)

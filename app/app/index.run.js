@@ -4,6 +4,7 @@ export function runBlock ($rootScope, $log) {
   'ngInject';
   $log.debug('runBlock end');
 
+  $rootScope.crosshairScale = 3.5;
   $rootScope.colorpicker = {
     preferredFormat: 'rgb',
     showAlpha: true,
@@ -24,15 +25,23 @@ export function runBlock ($rootScope, $log) {
     ]
   };
 
+  // load crosshairs
   storage.get('crosshairs', function(error, data) {
     if (error) throw error;
 
     $rootScope.crosshairs = data;
   });
 
+  // load colors
+  storage.get('colors', function(error, data) {
+    if (error) throw error;
+
+    $rootScope.colors = data;
+  });
+
   $rootScope.sendEvent = function(name) {
-    if (name === 'delete') {
-      if (confirm('Do you really wanna delete it?') === false) {
+    if (name === 'delete' || name === 'reset') {
+      if (confirm('Do you really wanna ' + name + ' it?') === false) {
         return;
       }
     }
