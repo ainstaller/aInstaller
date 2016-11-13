@@ -7,7 +7,6 @@ export class HudColorsController {
 
     $log.debug('colors');
     $rootScope.hideHudMenu = true;
-    //colors.[color.current].color
     $scope.color = {
       current: '',
       color: '',
@@ -15,6 +14,10 @@ export class HudColorsController {
 
     var oldColor = '';
     $scope.$watch('color.current', function() {
+      if($scope.color.current === '') {
+        return;
+      }
+
       if (angular.isUndefined($rootScope.colors[$scope.color.current])) {
         $rootScope.colors[$scope.color.current] = {
           color: '',
@@ -24,6 +27,17 @@ export class HudColorsController {
       oldColor = $rootScope.colors[$scope.color.current].color;
       $scope.color.color = $rootScope.colors[$scope.color.current].color;
       $rootScope.colors[$scope.color.current].color = $scope.color.color;
+
+      // hud elements trigger
+      if (angular.isUndefined($rootScope.color)) {
+        $rootScope.color = {};
+      }
+
+      // currently editing
+      $rootScope.color.healing = $scope.color.current === 'healing';
+      $rootScope.color.damage = $scope.color.current === 'damage';
+      $rootScope.color.buff = $scope.color.current === 'hp_buff';
+      $rootScope.color.low = $scope.color.current === 'hp_low';
     });
 
     $scope.$watch('color.color', function() {
@@ -43,7 +57,7 @@ export class HudColorsController {
     });
 
     $scope.$on('reset', function() {
-      $rootScope.colors[$scope.color.current].color = $scope.color.color;
+      $rootScope.colors[$scope.color.current].color = $scope.color.color = '255 255 255 255';
     });
   }
 }

@@ -40,12 +40,23 @@
         </div>
 
         <!-- health -->
-        <div class="health afont ashadow" ng:style="{color: colors.health.color}">200</div>
+        <div class="health afont ashadow" ng:style="{color: colors.hp.color}">
+          <span ng:class="{buff: color.buff, low: color.low}">
+            <span ng:if="!color.buff && !color.low">175</span>
+            <span ng:if="color.buff" ng:style="{background: colors.hp_buff.color}" >260</span>
+            <span ng:if="color.low" ng:style="{background: colors.hp_low.color}" >75</span>
+          </span>
+        </div>
 
         <!-- ammo -->
         <div class="ammo">
           <span class="main-ammo afont ashadow" ng:style="{color: colors.ammo.color}">4</span>
           <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}">20</span>
+        </div>
+
+        <!-- damage -->
+        <div class="damage" ng:if="color.damage">
+          
         </div>
       </div>
 
