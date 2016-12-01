@@ -41,6 +41,10 @@ export class HudColorsController {
     });
 
     $scope.$watch('color.color', function() {
+      if ($scope.color.color == '') {
+        return;
+      }
+
       $rootScope.colors[$scope.color.current].color = $scope.color.color;
     });
   
