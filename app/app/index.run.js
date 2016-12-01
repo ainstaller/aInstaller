@@ -64,6 +64,10 @@ export function runBlock ($rootScope, $log, $interval) {
   };
 
   $interval(function() {
+    if (angular.isUndefined($rootScope.color)) {
+      return;
+    }
+
     if ($rootScope.color.damage || $rootScope.color.healing) {
       $rootScope.randomDamage = randomNumber(30, 100);
       $rootScope.randomDamageLeft = randomNumber(0, 600);
