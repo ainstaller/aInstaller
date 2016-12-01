@@ -21,6 +21,13 @@ body {
   visibility: hidden;
 }
 
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
 .content {
   display: flex;
   flex-direction: row;
@@ -241,5 +248,9 @@ body {
       top: -15px;
       left: -15px;
     }
+  }
+
+  .damage {
+    font-size: 40px;
   }
 }

@@ -1,6 +1,6 @@
 const storage = require('electron-json-storage');
 
-export function runBlock ($rootScope, $log) {
+export function runBlock ($rootScope, $log, $interval) {
   'ngInject';
   $log.debug('runBlock end');
 
@@ -57,4 +57,19 @@ export function runBlock ($rootScope, $log) {
       $rootScope.totalCrosshairs = 0;
     }
   }, true);
+
+  
+  var randomNumber = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  $interval(function() {
+    if ($rootScope.color.damage || $rootScope.color.healing) {
+      $rootScope.randomDamage = randomNumber(30, 100);
+      $rootScope.randomDamageLeft = randomNumber(0, 600);
+      $rootScope.randomDamageRight = randomNumber(0, 600);
+      $rootScope.randomDamageTop = randomNumber(0, 600);
+      $rootScope.randomDamageBottom = randomNumber(0, 600);
+    }
+  }, 3000);
 }

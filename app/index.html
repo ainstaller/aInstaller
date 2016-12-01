@@ -54,9 +54,10 @@
           <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}">20</span>
         </div>
 
-        <!-- damage -->
-        <div class="damage" ng:if="color.damage">
-          
+        <!-- damage and healing -->
+        <div class="damage absolute-center afont ashadow" ng:if="color.damage || color.healing" 
+             ng:style="{color: color.damage ? colors.damage.color : color.healing ? colors.healing.color : '#000','padding-left': randomDamageLeft, 'padding-right': randomDamageRight, 'padding-top': randomDamageTop, 'padding-bottom': randomDamageBottom}">
+          {{ color.damage ? '-' : color.healing ? '+' : '' }}{{ randomDamage }}
         </div>
       </div>
 
