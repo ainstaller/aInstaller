@@ -62,18 +62,14 @@ export class HudCrosshairsController {
 
     $scope.onSizeChange = function() {
       $rootScope.crosshairs.current.size = $rootScope.crosshairs.current.size.replace(/\D/g,'');
+    };
 
+    $scope.onSizeChangeBlur = function () {
       if ($rootScope.crosshairs.current.size < 10) {
         $rootScope.crosshairs.current.size = 10;
 
       } else if ($rootScope.crosshairs.current.size > 50) {
         $rootScope.crosshairs.current.size = 50;
-      }
-    };
-
-    $scope.onSizeChangeBlur = function () {
-      if ($rootScope.crosshairs.current.size == 0) {
-        $rootScope.crosshairs.current.size = 1;
       }
     };
 
