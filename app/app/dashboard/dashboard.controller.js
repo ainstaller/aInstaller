@@ -19,7 +19,12 @@ export class DashboardController {
 
     $scope.state = ahud.state();
     $scope.changeState = function() {
-      ahud.install();
+      ahud.install({
+        crosshairs: $rootScope.crosshairs,
+        colors: $rootScope.colors
+      }, () => {
+        console.log('installed');
+      });
     };
 
     this.$http = $http;
