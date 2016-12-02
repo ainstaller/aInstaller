@@ -64,18 +64,18 @@
       </div>
 
       <!-- damage flash -->
-      <div class="item check" ng:click="crosshairs.current.dmgflash = !crosshairs.current.dmgflash">
+      <div class="item check" ng:click="crosshairs.current.dmgFlash = !crosshairs.current.dmgFlash">
         <span class="label">Damage Flash</span>
         <div class="icon">
-          <i ng:class="{'flaticon-check52': crosshairs.current.dmgflash, 'flaticon-close47': !crosshairs.current.dmgflash}"></i>
+          <i ng:class="{'flaticon-check52': crosshairs.current.dmgFlash, 'flaticon-close47': !crosshairs.current.dmgFlash}"></i>
         </div>
       </div>
 
       <!-- damage flash color -->
-      <div class="item color" ng:show="crosshairs.current.dmgflash">
+      <div class="item color" ng:show="crosshairs.current.dmgFlash">
         <span class="label">Dmg Flash Color</span>
         <div class="color">
-          <input class="apicker" onColorChange="crosshairs:onColorChange" onMove="crosshairs:onColorMove" />
+          <input spectrum-colorpicker options="colorpicker" ng:model="crosshairs.current.dmgFlashColor" />
         </div>
       </div>
 

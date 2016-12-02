@@ -157,12 +157,22 @@ class hud {
       const dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH);
       console.log('hud dest: ' + dest);
 
+      // crosshairs
       var crosshairs = '';
+      var crosshairsDamageFlashColor = '';
       for (var i in settings.crosshairs) {
         var ch = settings.crosshairs[i];
 
         if (ch.color === '') {
           ch.color = '255 255 255 255';
+        }
+
+        console.log(ch);
+        if (ch.dmgFlash === true) {
+          crosshairsDamageFlashColor += `
+          Animate Crosshair${ch.id}	 	FgColor 	"${this.parseColor(ch.dmgFlashColor)}" 		Linear 0.0  0.0
+	        Animate Crosshair${ch.id}	 	FgColor 	"${this.parseColor(ch.color)}" 		      	Linear 0.15 0.0
+          `;
         }
 
         crosshairs += `
@@ -202,7 +212,15 @@ class hud {
       hudlayout = hudlayout.replace('// KNUCKLESCROSSES', crosshairs);
       fs.writeFileSync(hudlayoutPath, hudlayout);
 
+      // crosshair's damage flash color
+      var crosshairDamageFlashColorPath = path.join(dest, 'scripts/hudanimations_ahud.txt');
+      var chDmgFlashColors = fs.readFileSync(crosshairDamageFlashColorPath, 'utf8');
+      console.log('DAMAGE FLASH' + crosshairsDamageFlashColor);
+      chDmgFlashColors = chDmgFlashColors.replace(/Animate[\s]+KnucklesCrosses[\s]+FgColor[\s]+"CrosshairDamage"[\s]+Linear[\s]+0.0[\s]+0.0/g, crosshairsDamageFlashColor);
+      
+      fs.writeFileSync(crosshairDamageFlashColorPath, chDmgFlashColors);
 
+      // colors
       var hudcolorsPath = path.join(dest, 'resource/scheme/colors.res');
       var hudcolors = fs.readFileSync(hudcolorsPath, 'utf8');
       
@@ -233,7 +251,34 @@ class hud {
 
         } else if (i === 'ammo_reserve') {
           name = 'Ammo In Reserve';
-        }
+
+        } else if (i === 'low_ammo_flash_start') {
+          name = 'LowAmmo1';
+
+        } else if (i === 'low_ammo_flash_end') {
+          name = 'LowAmmo2';
+
+        } else if (i === 'stickies') {
+          name = 'Stickies';
+
+        } else if (i === 'metal') {
+          name = 'Metal';
+
+        } else if (i === 'killstreak') {
+          name = 'Killstreak';
+
+        } else if (i === 'charge_percent') {
+          name = 'ChargePercent';
+
+        } else if (i === 'ubercharge_meter') {
+          name = 'Ubercharge Meter';
+
+        } else if (i === 'ubercharge_flash_start') {
+          name = 'Ubercharge1';
+
+        } else if (i === 'ubercharge_flash_end') {
+          name = 'Ubercharge2';
+        } 
 
         if (name !== '' && color !== '') {
           hudcolors = hudcolors.replace(new RegExp(`"${name}"(.*)`), `"${name}" "${this.parseColor(color)}"`)
@@ -251,7 +296,7 @@ class hud {
     }
 
     color = color.replace(/[rgba()]/g, '');
-    var colors = color.split(',')
+    var colors = color.split(',');
     
     if (colors.length === 4) {
       colors[colors.length-1] = ' ' + Math.floor(colors[colors.length-1] * 255);
