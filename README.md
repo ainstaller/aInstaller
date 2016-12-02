@@ -1,5 +1,7 @@
-WORK IN PROGRESS
+# ainstaller for ahud
 
-IT WILL NOT WORK
+build
+`npm run build`
 
-ONLY TESTED IN LINUX
+run
+`npm start`

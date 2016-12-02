@@ -102,8 +102,9 @@ class hud {
 
   getSteamPath() {
     if (os.platform() === 'win32') {
-      const exec = require('child_process').exec;
-      exec('"./utils.exe" -steam-location', (err, stdout, stderr) => {
+      var cproc = require('child_process');
+      var utilsPath = path.join(__dirname, '../utils.exe');
+      cproc.execFile(`${utilsPath}`, ['-steam-location'], (err, stdout, stderr) => {
         if (err) {
           alert(err);
           console.error(err);

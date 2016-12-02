@@ -1,12 +1,14 @@
 {
   "name": "ainstaller",
   "version": "2.0.0",
-  "description": "",
+  "description": "for ahud",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron ./app",
+    "build": "build --win --x64 --prerelease"
   },
-  "repository": "https://github.com/UnnoTed/ainstaller",
+  "postinstall": "install-app-deps",
+  "repository": "https://github.com/ainstaller/ainstaller",
   "keywords": [
     "ainstaller"
   ],
@@ -18,9 +20,16 @@
     "electron-compilers": "^4.0.5"
   },
   "dependencies": {
+    "babel-register": "^6.18.0",
+    "electron-compilers": "^4.0.5",
     "electron-compile": "^4.0.2",
     "electron-json-storage": "^2.0.3",
     "fs-extra": "^1.0.0",
     "unzip": "^0.1.11"
+  },
+  "build": {
+    "appId": "UnnoTed.ainstaller",
+    "category": "UnnoTed.ainstaller.gaming",
+    "compression": "maximum"
   }
 }
