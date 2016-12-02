@@ -4,7 +4,7 @@ export function runBlock ($rootScope, $log, $interval) {
   'ngInject';
   $log.debug('runBlock end');
 
-  $rootScope.crosshairScale = 3.5;
+  $rootScope.crosshairScale = 3;
   $rootScope.colorpicker = {
     preferredFormat: 'rgb',
     showAlpha: true,

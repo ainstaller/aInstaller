@@ -34,8 +34,7 @@
         <div class="item crosshair" ng:repeat="(name, crosshair) in crosshairs" 
              ng:if="crosshair.enabled && name != 'list' && name != '' && name != 'current' && name != 'new'"
              ng:click="editCrosshair(name)" ng:class="{outline: crosshair.outline}"
-             ng:style="{color: crosshair.color, 'font-size': (crosshairScale*1.32)*crosshair.size, width: crosshairScale*crosshair.size, height: crosshairScale*crosshair.size }">
-             <!-- crosshair's font-size is 132% (so it can be centered) of 4.2 which is the scale that i think that it's similar to the game -->
+             ng:style="{color: crosshair.color, 'font-size': (crosshairScale*1)*crosshair.size, width: crosshairScale*crosshair.size, height: crosshairScale*crosshair.size }">
           {{ crosshair.crosshair }}
         </div>
 
