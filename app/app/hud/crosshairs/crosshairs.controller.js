@@ -41,11 +41,11 @@ export class HudCrosshairsController {
         crosshair: $rootScope.list[0],
         enabled: true,
         size: 20,
-        color: '#FFFFFF',
+        color: 'rgba(255, 255, 255, 255)',
         outline: false,
         antialiasing: false,
         dmgFlash: false,
-        dmgFlashColor: '#FFFFFF'
+        dmgFlashColor: 'rgba(255, 255, 255, 255)'
       };
 
       hide(true);
