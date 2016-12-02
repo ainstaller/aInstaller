@@ -1,0 +1,84 @@
+.dash {
+  //background: rgba(195, 52, 52, 0.78);
+  //padding: 15px 20px;
+  //color: white;
+  display: flex;
+
+  .version {
+    .current, .latest {
+      font-size: 20px;
+      padding: 16px;
+      height: 24px;
+
+      color: white;
+    }
+  }
+
+  .latest {
+    > span {
+      color: #34f58a;
+    }
+  }
+
+  .item.check.right {
+    margin-right: 30px;
+  }
+
+  .state {
+    text-align: right;
+    width: 450px;
+    height: 64px;
+    flex: 1;
+
+    > div {
+      margin-top: 20px;
+      color: white;
+    }
+
+    > button {
+      float: right;
+
+      width: 200px;
+      height: 62px;
+      background: rgba(0, 0, 0, 0.5);
+
+      text-decoration: none;
+      display: block;
+      color: #fafafa;
+
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      margin-right: 10px;
+      text-align: center;
+      cursor: pointer;
+
+      transition: all 250ms;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.8);
+      }
+
+      > .label {
+        font-size: 10px;
+        text-transform: uppercase;
+      }
+
+      &.text {
+        > div {
+          margin-top: 18px;
+          font-size: 50px;
+        }
+
+        > input {
+          margin-top: 18px;
+          font-size: 50px;
+          width: 80px;
+          background: transparent;
+          border: none;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

@@ -101,6 +101,9 @@
 
     <!-- build:js({.tmp/serve,.tmp/partials}) scripts/app.js -->
     <!-- inject:js -->
+    <script>
+    var ahud = require('./app/ahud').ahud;
+    </script>
     <script type="text/javascript" src="app/index.module.js"></script>
     <!-- endinject -->
 

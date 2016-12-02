@@ -1,8 +1,26 @@
 import {config} from '../config';
 
 export class DashboardController {
-  constructor ($http, $log) {
+  constructor ($http, $log, $scope, $rootScope) {
     'ngInject';
+
+    $scope.version = {
+      current: '',
+      latest: ''
+    };
+
+    ahud.currentVersion(() => {
+      $scope.version.current = ahud.current.string();
+    });
+
+    ahud.latestVersion(() => {
+      $scope.version.latest = ahud.latest.string();
+    });
+
+    $scope.state = ahud.state();
+    $scope.changeState = function() {
+      ahud.install();
+    };
 
     this.$http = $http;
     this.$log = $log;
@@ -10,6 +28,7 @@ export class DashboardController {
   }
 
   getNews() {
+    return;
     var self = this;
     let newsURL = 'http://steamcommunity.com/groups/ahud/rss';
     this.$http.get(newsURL).then(function(response) {

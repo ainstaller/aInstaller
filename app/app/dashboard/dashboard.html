@@ -1,4 +1,36 @@
 <div id="page-dashboard" class="container">
+  <div class="dash menu page full-width">
+    <div class="version">
+      <div class="latest ashadow">
+        Latest Version: <span>{{ version.latest }}</span>
+      </div>
+      <div class="current ashadow">
+        Current Version: <span>{{ version.current }}</span>
+      </div>
+    </div>
+
+    <div class="state">
+      <div class="ashadow">
+        ahud
+        <span ng-switch="state">
+          <span ng-switch-default>'s state is unknown.</span>
+          <span ng-switch-when="UPDATE_AVAILABLE"> is not up to date.</span>
+          <span ng-switch-when="NOT_INSTALLED"> is not installed.</span>
+          <span ng-switch-when="INSTALLED"> is installed and up to date.</span>
+          <span ng-switch-when="CHANGED"> is changed, click to apply changes.</span>
+        </span>
+      </div>
+
+    </div>
+    
+    <div class="item check right" ng:click="changeState()">
+      <span class="label">Install</span>
+      <div class="icon">
+        <i ng:class="{'flaticon-cloud-computing': true}"></i>
+      </div>
+    </div>
+  </div>
+
   <div class="news">
 
     <!-- articles -->
@@ -8,6 +40,5 @@
       </div>
     </div>
     <!-- end: articles -->
-
   </div>
 </div>
