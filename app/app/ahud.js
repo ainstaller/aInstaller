@@ -1,7 +1,14 @@
 import {config} from './config';
 import unzip from 'unzip';
-import fs from 'fs';
+import path from 'path';
+import fs from 'fs-extra';
 import os from 'os';
+
+const storage = require('electron-json-storage');
+const UPDATE_AVAILABLE = 'UPDATE_AVAILABLE';
+const NOT_INSTALLED = 'NOT_INSTALLED';
+const INSTALLED = 'INSTALLED';
+const CHANGED = 'CHANGED';
 
 class version {
   constructor(str) {
@@ -81,12 +88,38 @@ class hud {
 
   isInstalled() {
     if (os.platform() === 'win32') {
+      if (typeof this.steamPath === 'undefined') {
+        this.getSteamPath();
+      }
+
+      console.log('steam path: ' + this.steamPath);
     } else {
       alert(os.platform() + ' system is not supported!');
       return;
     }
 
     return false;
+  }
+
+  getSteamPath() {
+    if (os.platform() === 'win32') {
+      const exec = require('child_process').exec;
+      exec('"./utils.exe" -steam-location', (err, stdout, stderr) => {
+        if (err) {
+          alert(err);
+          console.error(err);
+          return;
+        }
+
+        console.log(stdout);
+
+        // remove new line
+        this.steamPath = stdout.substr(0, stdout.length - 1);
+      });
+    } else {
+      alert(os.platform() + ' system is not supported!');
+      return;
+    }
   }
 
   isUpToDate() {
@@ -100,26 +133,134 @@ class hud {
   state() {
     if (this.isInstalled()) {
       if (!this.isUpToDate()) {
-        return 'UPDATE_AVAILABLE'; 
+        return UPDATE_AVAILABLE; 
       }
 
       // not changed and up to date
       if (!this.isChanged() && this.isUpToDate()) {
-        return 'INSTALLED';
+        return INSTALLED;
       }
 
       if (this.isChanged()) {
-        return 'CHANGED';
+        return CHANGED;
       }
     }
 
-    return 'NOT_INSTALLED';
+    return NOT_INSTALLED;
   }
 
-  install(cb) {
+  install(settings, cb) {
     this.download(() => {
       console.log('downloaded');
+
+      const state = this.state();      
+      const dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH);
+      console.log('hud dest: ' + dest);
+
+      var crosshairs = '';
+      for (var i in settings.crosshairs) {
+        var ch = settings.crosshairs[i];
+
+        if (ch.color === '') {
+          ch.color = '255 255 255 255';
+        }
+
+        crosshairs += `
+        Crosshair${ch.id}
+        {
+          "labelText"		  "${ch.crosshair}"
+          "fgcolor" 		  "${this.parseColor(ch.color)}"
+          "enabled" 		  "${ch.enabled ? '1' : '0'}"
+          "visible" 		  "${ch.enabled ? '1' : '0'}"
+          "font"			    "size:${ch.size},outline:${ch.outline ? 'on' : 'off'}"
+
+          "controlName"	  "CExLabel"
+          "fieldName"	 	  "Crosshair${ch.id}"
+          "zpos"			    "0"
+          "xpos" 		 	    "c-25"
+          "ypos" 		 	    "c-25"
+          "wide" 		 	    "50"
+          "tall" 		 	    "50"
+          "textAlignment"	"center"
+        }
+        `
+      }
+
+      console.log(crosshairs);
+
+      var fileName = './ahud/' + this.latest.string() + '/ahud-master/';
+      try {
+        fs.emptyDirSync(dest);
+        fs.copySync(fileName, dest);
+        console.log('copied');
+      } catch(e) {
+        console.error(e);
+      }
+
+      var hudlayoutPath = path.join(dest, 'scripts/hudlayout.res');
+      var hudlayout = fs.readFileSync(hudlayoutPath, 'utf8');
+      hudlayout = hudlayout.replace('// KNUCKLESCROSSES', crosshairs);
+      fs.writeFileSync(hudlayoutPath, hudlayout);
+
+
+      var hudcolorsPath = path.join(dest, 'resource/scheme/colors.res');
+      var hudcolors = fs.readFileSync(hudcolorsPath, 'utf8');
+      
+      console.log(settings.colors);
+      for (var i in settings.colors) {
+        var color = settings.colors[i];
+        if (typeof color['color'] !== 'undefined') {
+          color = color.color;
+        }
+
+        if (i === 'hp') {
+          name = 'HP';
+
+        } else if (i === 'hp_buff') {
+          name = 'HP Buff';
+
+        } else if (i === 'hp_low') {
+          name = 'HP Low';
+
+        } else if (i === 'damage') {
+          name = 'Damage Numbers';
+
+        } else if (i === 'healing') {
+          name = 'Healing Numbers';
+
+        } else if (i === 'ammo') {
+          name = 'Ammo In Clip';
+
+        } else if (i === 'ammo_reserve') {
+          name = 'Ammo In Reserve';
+        }
+
+        if (name !== '' && color !== '') {
+          hudcolors = hudcolors.replace(new RegExp(`"${name}"(.*)`), `"${name}" "${this.parseColor(color)}"`)
+        }
+      }
+      
+      fs.writeFileSync(hudcolorsPath, hudcolors);
     });
+  }
+
+  parseColor(color) {
+    if (typeof color === 'undefined' || color.length === 0) {
+      console.log('color not parsed! -> ' + color);
+      return '255 255 255 255';
+    }
+
+    color = color.replace(/[rgba()]/g, '');
+    var colors = color.split(',')
+    
+    if (colors.length === 4) {
+      colors[colors.length-1] = ' ' + Math.floor(colors[colors.length-1] * 255);
+
+    } else if (colors.length === 3) {
+      colors.push(' 255');
+    }
+
+    return colors.join('');
   }
 
   download(cb) {
@@ -129,6 +270,7 @@ class hud {
     try {
       fs.accessSync(fileName, fs.F_OK);
       console.log('exists');
+      cb();
       return; // exists
     } catch(e) {
       console.error(e);
