@@ -4,7 +4,6 @@ import path from 'path';
 import fs from 'fs-extra';
 import os from 'os';
 
-const storage = require('electron-json-storage');
 const UPDATE_AVAILABLE = 'UPDATE_AVAILABLE';
 const NOT_INSTALLED = 'NOT_INSTALLED';
 const INSTALLED = 'INSTALLED';
