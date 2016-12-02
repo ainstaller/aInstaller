@@ -1,30 +1,47 @@
 import {config} from '../config';
 
 export class DashboardController {
-  constructor ($http, $log, $scope, $rootScope) {
+  constructor ($http, $log, $scope, $rootScope, $timeout) {
     'ngInject';
 
     $scope.version = {
-      current: '',
+      current: 'not installed!',
       latest: ''
     };
 
-    ahud.currentVersion(() => {
-      $scope.version.current = ahud.current.string();
-    });
+    $scope.refresh = function() {
+      ahud.latestVersion(() => {
+        $scope.version.latest = ahud.latest.string();
 
-    ahud.latestVersion(() => {
-      $scope.version.latest = ahud.latest.string();
-    });
+        ahud.currentVersion(() => {
+          $scope.version.current = ahud.current.string();
+          $scope.state = ahud.state();
+        });
+      });
+    };
+    $scope.refresh();
 
     $scope.state = ahud.state();
     $scope.changeState = function() {
-      ahud.install({
-        crosshairs: $rootScope.crosshairs,
-        colors: $rootScope.colors
-      }, () => {
-        console.log('installed');
-      });
+      if ($scope.state === 'INSTALLED') {
+        ahud.remove(() => {
+          console.log('removed');
+          $timeout(function() {
+            $scope.refresh();
+          }, 1000);
+        });
+
+      } else {
+        ahud.install({
+          crosshairs: $rootScope.crosshairs,
+          colors: $rootScope.colors
+        }, () => {
+          console.log('installed');
+          $timeout(function() {
+            $scope.refresh();
+          }, 1000);
+        });
+      }
     };
 
     this.$http = $http;

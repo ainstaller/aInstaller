@@ -38,24 +38,49 @@ class version {
 
     return 'v' + this.year + '.' + this.month + this.day; 
   }
+
+  empty() {
+    return typeof this.year === 'undefined';
+  }
 }
 
 class hud {
   constructor() {
+    this.current = new version();
   }
 
   currentVersion(cb) {
-    if (this.isInstalled()) {
-      return '';
-    }
+    if (!this.current.empty()) {
+      if (!this.isInstalled()) {
+        this.current = new version();
+      }
 
-    this.current = new version();
-    cb(this.current);
+      if (typeof cb !== 'undefined') {
+        cb();
+      }
+
+    } else if (typeof this.steamPath !== 'undefined' && this.current.empty()) {
+      console.log('getting current version');
+
+      const mmoPath = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH, 'resource/ui/mainmenuoverride.res');
+      var mmo;
+
+      try {
+        mmo = fs.readFileSync(mmoPath, 'utf8');
+      } catch(e) {
+        console.log('currentVersion: hud is not installed!');
+      }
+
+      this.current = new version(mmo);
+      if (typeof cb !== 'undefined') {
+        cb(this.current);
+      }
+    }
   }
 
   latestVersion(cb) {
     if (typeof this.latest !== 'undefined') {
-      cb();
+      cb(this.latest);
     }
 
     const https = require('https');
@@ -92,9 +117,10 @@ class hud {
       }
 
       console.log('steam path: ' + this.steamPath);
+
+      return (!this.current.empty());
     } else {
       alert(os.platform() + ' system is not supported!');
-      return;
     }
 
     return false;
@@ -115,6 +141,7 @@ class hud {
 
         // remove new line
         this.steamPath = stdout.substr(0, stdout.length - 1);
+        this.dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH);
       });
     } else {
       alert(os.platform() + ' system is not supported!');
@@ -122,7 +149,16 @@ class hud {
     }
   }
 
-  isUpToDate() {
+  isUpToDate(cb) {
+    if (!this.current.empty() && typeof this.latest !== 'undefined') {
+      console.log(this.current);
+      console.log(this.latest);
+
+      return this.current.year === this.latest.year && 
+        this.current.month === this.latest.month &&
+        this.current.day === this.latest.day;
+    }
+
     return false;
   }
 
@@ -149,13 +185,25 @@ class hud {
     return NOT_INSTALLED;
   }
 
+
+  remove(cb) {
+    try {
+      fs.emptyDirSync(this.dest);
+      this.current = new version();
+      console.log('removed hud');
+    } catch(e) {
+      console.error(e);
+    }
+
+    cb();
+  }
+
   install(settings, cb) {
     this.download(() => {
       console.log('downloaded');
 
-      const state = this.state();      
-      const dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH);
-      console.log('hud dest: ' + dest);
+      const state = this.state();
+      console.log('hud dest: ' + this.dest);
 
       // crosshairs
       var crosshairs = '';
@@ -200,20 +248,20 @@ class hud {
 
       var fileName = './ahud/' + this.latest.string() + '/ahud-master/';
       try {
-        fs.emptyDirSync(dest);
-        fs.copySync(fileName, dest);
+        fs.emptyDirSync(this.dest);
+        fs.copySync(fileName, this.dest);
         console.log('copied');
       } catch(e) {
         console.error(e);
       }
 
-      var hudlayoutPath = path.join(dest, 'scripts/hudlayout.res');
+      var hudlayoutPath = path.join(this.dest, 'scripts/hudlayout.res');
       var hudlayout = fs.readFileSync(hudlayoutPath, 'utf8');
       hudlayout = hudlayout.replace('// KNUCKLESCROSSES', crosshairs);
       fs.writeFileSync(hudlayoutPath, hudlayout);
 
       // crosshair's damage flash color
-      var crosshairDamageFlashColorPath = path.join(dest, 'scripts/hudanimations_ahud.txt');
+      var crosshairDamageFlashColorPath = path.join(this.dest, 'scripts/hudanimations_ahud.txt');
       var chDmgFlashColors = fs.readFileSync(crosshairDamageFlashColorPath, 'utf8');
       console.log('DAMAGE FLASH' + crosshairsDamageFlashColor);
       chDmgFlashColors = chDmgFlashColors.replace(/Animate[\s]+KnucklesCrosses[\s]+FgColor[\s]+"CrosshairDamage"[\s]+Linear[\s]+0.0[\s]+0.0/g, crosshairsDamageFlashColor);
@@ -221,7 +269,7 @@ class hud {
       fs.writeFileSync(crosshairDamageFlashColorPath, chDmgFlashColors);
 
       // colors
-      var hudcolorsPath = path.join(dest, 'resource/scheme/colors.res');
+      var hudcolorsPath = path.join(this.dest, 'resource/scheme/colors.res');
       var hudcolors = fs.readFileSync(hudcolorsPath, 'utf8');
       
       console.log(settings.colors);
@@ -286,6 +334,7 @@ class hud {
       }
       
       fs.writeFileSync(hudcolorsPath, hudcolors);
+      cb();
     });
   }
 

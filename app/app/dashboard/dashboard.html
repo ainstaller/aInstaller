@@ -5,7 +5,7 @@
         Latest Version: <span>{{ version.latest }}</span>
       </div>
       <div class="current ashadow">
-        Current Version: <span>{{ version.current }}</span>
+        Current Version: <span ng-class="{'green': state === 'INSTALLED'}">{{ version.current }}</span>
       </div>
     </div>
 
@@ -24,9 +24,15 @@
     </div>
     
     <div class="item check right" ng:click="changeState()">
-      <span class="label">Install</span>
+      <span ng-switch="state">
+        <span  class="label" ng-switch-default>...</span>
+        <span  class="label" ng-switch-when="UPDATE_AVAILABLE">Update</span>
+        <span class="label" ng-switch-when="NOT_INSTALLED">Install</span>
+        <span class="label" ng-switch-when="INSTALLED">Remove</span>
+        <span class="label" ng-switch-when="CHANGED">Apply Changes</span>
+      </span>
       <div class="icon">
-        <i ng:class="{'flaticon-cloud-computing': true}"></i>
+        <i ng:class="{'flaticon-cloud-computing': state === 'NOT_INSTALLED', 'flaticon-rubbish-bin': state === 'INSTALLED'}"></i>
       </div>
     </div>
   </div>
