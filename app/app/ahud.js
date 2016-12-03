@@ -248,7 +248,12 @@ class hud {
 
       var fileName = './ahud/' + this.latest.string() + '/ahud-master/';
       try {
-        fs.emptyDirSync(this.dest);
+        if (!fs.existsSync(this.dest)) {
+          fs.mkdirSync(this.dest);
+        } else {
+          fs.emptyDirSync(this.dest);
+        }
+
         fs.copySync(fileName, this.dest);
         console.log('copied');
       } catch(e) {
@@ -393,11 +398,12 @@ class hud {
 
         console.log('unzipping...');
         // unzip
-        fs.createReadStream(fileName).pipe(unzip.Extract({ path: fileName.replace('.zip', '') }));
-
-        if (typeof cb !== 'undefined') {
-          cb();
-        }
+        var r = fs.createReadStream(fileName).pipe(unzip.Extract({ path: fileName.replace('.zip', '') }));
+        r.on('close', () => {
+          if (typeof cb !== 'undefined') {
+            cb();
+          }
+        });
       });
     }).on('error', (e) => {
       console.log(`error: ${e.message}`);

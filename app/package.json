@@ -4,6 +4,9 @@
   "description": "for ahud",
   "author": "UnnoTed",
   "license": "MIT",
+  "scripts": {
+    "postinstall": "install-app-deps"
+  },
   "main": "main.js",
   "postinstall": "install-app-deps",
   "repository": "https://github.com/ainstaller/ainstaller",

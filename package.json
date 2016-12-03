@@ -4,10 +4,10 @@
   "description": "for ahud",
   "main": "main.js",
   "scripts": {
+    "postinstall": "install-app-deps",
     "start": "electron ./app",
     "build": "build --win --x64 --prerelease"
   },
-  "postinstall": "install-app-deps",
   "repository": "https://github.com/ainstaller/ainstaller",
   "keywords": [
     "ainstaller"
