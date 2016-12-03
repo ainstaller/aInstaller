@@ -24,12 +24,12 @@
     </div>
     
     <div class="item check right" ng:click="changeState()">
-      <span ng-switch="state">
-        <span  class="label" ng-switch-default>...</span>
-        <span  class="label" ng-switch-when="UPDATE_AVAILABLE">Update</span>
-        <span class="label" ng-switch-when="NOT_INSTALLED">Install</span>
-        <span class="label" ng-switch-when="INSTALLED">Remove</span>
-        <span class="label" ng-switch-when="CHANGED">Apply Changes</span>
+      <span class="label" ng-switch="state">
+        <span ng-switch-default>...</span>
+        <span ng-switch-when="UPDATE_AVAILABLE">Update</span>
+        <span ng-switch-when="NOT_INSTALLED">Install</span>
+        <span ng-switch-when="INSTALLED">Remove</span>
+        <span ng-switch-when="CHANGED">Apply Changes</span>
       </span>
       <div class="icon">
         <i ng:class="{'flaticon-cloud-computing': state === 'NOT_INSTALLED', 'flaticon-rubbish-bin': state === 'INSTALLED'}"></i>
