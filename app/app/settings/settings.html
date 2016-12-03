@@ -1,1 +1,17 @@
-settings
+<div id="page-settings" class="container" ng:init="hideHudMenu = false">
+  <div class="menu page full-width">
+
+    <!-- crosshairs -->
+    <div class="item check" ng:click="settings.video = !settings.video">
+      <span class="label">Video</span>
+      <div class="icon">
+        <i ng:class="{'flaticon-close47': !settings.video, 'flaticon-check52': settings.video}"></i>
+      </div>
+    </div>
+
+    <div class="item text" ng:show="settings.video">
+      <span class="label">Video URL</span>
+      <input class="text" contenteditable="true" ng:blur="onSizeChangeBlur()" ng:change="onSizeChange()" ng:model="settings.video_url">
+    </div>
+  </div>
+</div>

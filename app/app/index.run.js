@@ -25,6 +25,19 @@ export function runBlock ($rootScope, $log, $interval) {
     ]
   };
 
+  // default settings
+  $rootScope.settings = {
+    video: true,
+    video_url: 'https://www.youtube.com/watch?v=3YBsmwZi56s'
+  };
+
+  // load settings
+  storage.get('settings', function(error, data) {
+    if (error) throw error;
+
+    $rootScope.settings = data;
+  });
+
   // load crosshairs
   storage.get('crosshairs', function(error, data) {
     if (error) throw error;

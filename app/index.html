@@ -38,7 +38,7 @@
     </div>
 
     <div class="content">
-      <div class="hud-layer">
+      <div class="hud-layer" ng:style="{'background-image': settings.video ? 'none' : 'url(http://orig10.deviantart.net/4599/f/2012/298/f/a/tf2_alpine_landscape_by_mlebled-d5iwdq8.jpg)'}">
         <!-- crosshair -->
         <div class="item crosshair" ng:repeat="(name, crosshair) in crosshairs" 
              ng:if="crosshair.enabled && name != 'list' && name != '' && name != 'current' && name != 'new'"
@@ -71,7 +71,7 @@
 
       <div class="sidebar" ng:include="'app/sidebar/sidebar.html'"></div>
       <div class="page full-width" ui:view></div>
-      <a:video data-property="{videoURL:'https://www.youtube.com/watch?v=3YBsmwZi56s', showControls:false, quality:'hd1080', autoPlay:true, mute:true, startAt:0, opacity:1}" />
+      <a:video id="bgvideo" />
     </div>
 
     <!-- build:js(src) scripts/vendor.js -->

@@ -5,5 +5,6 @@ export class HudController {
     'ngInject';
 
     $rootScope.hideHudMenu = false;
+    $rootScope.loading = false;
   }
 }
