@@ -5,7 +5,7 @@
         Latest Version: <span>{{ version.latest }}</span>
       </div>
       <div class="current ashadow">
-        Current Version: <span ng-class="{'green': state === 'INSTALLED'}">{{ version.current }}</span>
+        Current Version: <span ng-class="{'green': state === 'INSTALLED'}">{{ version.current || 'not installed!' }}</span>
       </div>
     </div>
 

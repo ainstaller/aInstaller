@@ -9,25 +9,35 @@ export class DashboardController {
       latest: ''
     };
 
-    $scope.refresh = function() {
+    $scope.refresh = function(cb) {
       ahud.latestVersion(() => {
         $scope.version.latest = ahud.latest.string();
 
         ahud.currentVersion(() => {
           $scope.version.current = ahud.current.string();
           $scope.state = ahud.state();
+
+          if (typeof cb !== 'undefined') {
+            cb();
+          }
         });
       });
     };
-    $scope.refresh();
+    $scope.refresh(() => {
+      $rootScope.loading = false;
+    });
 
     $scope.state = ahud.state();
     $scope.changeState = function() {
+      $rootScope.loading = true;
+
       if ($scope.state === 'INSTALLED') {
         ahud.remove(() => {
           console.log('removed');
           $timeout(function() {
-            $scope.refresh();
+            $scope.refresh(() => {
+              $rootScope.loading = false;
+            });
           }, 1000);
         });
 
@@ -38,7 +48,9 @@ export class DashboardController {
         }, () => {
           console.log('installed');
           $timeout(function() {
-            $scope.refresh();
+            $scope.refresh(() => {
+              $rootScope.loading = false;
+            });
           }, 1000);
         });
       }
