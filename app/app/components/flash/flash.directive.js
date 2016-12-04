@@ -19,7 +19,6 @@ export function FlashDirective($interval, $timeout) {
 
     var run = function() {
       mi = $interval(function() {
-        console.log('interval ' + switcher + ' - ' + (switcher ? scope.start : scope.end).color);
         angular.element(el).animate({
           'background-color': (switcher ? scope.start : scope.end).color,
         }, 150);
@@ -33,7 +32,6 @@ export function FlashDirective($interval, $timeout) {
 
       $timeout(function() {
         angular.element(el).removeAttr('style');
-        console.log('clearing');
       }, 301);
     };
 
