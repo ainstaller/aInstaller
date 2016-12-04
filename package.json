@@ -6,7 +6,8 @@
   "scripts": {
     "postinstall": "install-app-deps",
     "start": "electron ./app",
-    "build": "build --win --x64 --prerelease"
+    "build": "build --win --x64 --prerelease",
+    "release": "build --win --x64 --publish always"
   },
   "repository": "https://github.com/ainstaller/ainstaller",
   "keywords": [
@@ -28,8 +29,11 @@
     "unzip": "^0.1.11"
   },
   "build": {
-    "appId": "UnnoTed.ainstaller",
-    "category": "UnnoTed.ainstaller.gaming",
-    "compression": "maximum"
+    "appId": "com.unnoted.ainstaller",
+    "category": "gaming",
+    "compression": "maximum",
+    "win": {
+      "publish": ["github"]
+    }
   }
 }

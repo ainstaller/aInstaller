@@ -23,9 +23,6 @@ export class DashboardController {
         });
       });
     };
-    $scope.refresh(() => {
-      $rootScope.loading = false;
-    });
 
     $scope.state = ahud.state();
     $scope.changeState = function() {
@@ -55,6 +52,10 @@ export class DashboardController {
         });
       }
     };
+
+    $scope.refresh(() => {
+      $rootScope.loading = false;
+    });
 
     this.$http = $http;
     this.$log = $log;
