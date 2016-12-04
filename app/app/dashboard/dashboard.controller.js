@@ -1,7 +1,7 @@
 import {config} from '../config';
 
 export class DashboardController {
-  constructor ($http, $log, $scope, $rootScope, $timeout) {
+  constructor ($http, $log, $scope, $rootScope, $timeout, toasty) {
     'ngInject';
 
     $scope.version = {
@@ -35,6 +35,18 @@ export class DashboardController {
             $scope.refresh(() => {
               $rootScope.loading = false;
             });
+
+            toasty.warning({
+              title: "Dashboard",
+              msg: "ahud was removed from your tf2 directory!",
+              showClose: true,
+              clickToClose: false,
+              timeout: 5000,
+              sound: false,
+              html: false,
+              shake: false,
+              theme: "default"
+            });
           }, 1000);
         });
 
@@ -47,6 +59,18 @@ export class DashboardController {
           $timeout(function() {
             $scope.refresh(() => {
               $rootScope.loading = false;
+            });
+
+            toasty.success({
+              title: "Dashboard",
+              msg: "ahud is installed and up to date!",
+              showClose: true,
+              clickToClose: false,
+              timeout: 5000,
+              sound: false,
+              html: false,
+              shake: false,
+              theme: "default"
             });
           }, 1000);
         });

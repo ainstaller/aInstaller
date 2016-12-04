@@ -2,7 +2,7 @@
 const storage = require('electron-json-storage');
 
 export class HudCrosshairsController {
-  constructor($http, $log, $scope, $rootScope) {
+  constructor($http, $log, $scope, $rootScope, toasty) {
     'ngInject';
 
     if (!angular.isObject($rootScope.crosshairs)) {
@@ -83,6 +83,18 @@ export class HudCrosshairsController {
 
       storage.set('crosshairs', $rootScope.crosshairs, function(error) {
         if (error) throw error;
+
+        toasty.success({
+          title: "Crosshair",
+          msg: "Crosshair saved!",
+          showClose: true,
+          clickToClose: false,
+          timeout: 5000,
+          sound: false,
+          html: false,
+          shake: false,
+          theme: "default"
+        });
       });
 
       hide(false);
@@ -90,6 +102,18 @@ export class HudCrosshairsController {
 
     $scope.$on('cancel', function() {
       hide(false);
+
+      toasty.warning({
+        title: "Crosshair",
+        msg: "Crosshair's changes canceled!",
+        showClose: true,
+        clickToClose: false,
+        timeout: 5000,
+        sound: false,
+        html: false,
+        shake: false,
+        theme: "default"
+      });
     });
 
     $scope.$on('delete', function() {
@@ -101,6 +125,18 @@ export class HudCrosshairsController {
       });
 
       hide(false);
+
+      toasty.warning({
+        title: "Crosshair",
+        msg: "Crosshair deleted!",
+        showClose: true,
+        clickToClose: false,
+        timeout: 5000,
+        sound: false,
+        html: false,
+        shake: false,
+        theme: "default"
+      });
     });
   }
 }

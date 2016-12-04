@@ -2,8 +2,27 @@
 const storage = require('electron-json-storage');
 
 export class HudColorsController {
-  constructor ($http, $log, $scope, $rootScope) {
+  constructor ($http, $log, $scope, $rootScope, toasty) {
     'ngInject';
+
+    var colorsName = {
+      'hp': 'HP',
+      'hp_buff': 'HP Buff',
+      'hp_low': 'HP Low',
+      'damage': 'Damage Numbers',
+      'healing': 'Healing Numbers',
+      'ammo': 'Ammo In Clip',
+      'ammo_reserve': 'Ammo In Reserve',
+      'low_ammo_flash_start': 'Low Ammo Flash Start',
+      'low_ammo_flash_end': 'Low Ammo Flash End',
+      'stickies': 'Stickies (Demoman)',
+      'metal': 'Metal (Engineer)',
+      'killstreak': 'KillStreak',
+      'charge_percent': 'Charge Percentage (Medic)',
+      'ubercharge_meter': 'Ubercharge Meter (Medic)',
+      'ubercharge_flash_start': 'Ubercharge Flash Start (Medic)',
+      'ubercharge_flash_end': 'Ubercharge Flash End (Medic)'
+    };
 
     $log.debug('colors');
     $rootScope.hideHudMenu = true;
@@ -53,15 +72,51 @@ export class HudColorsController {
 
       storage.set('colors', $rootScope.colors, function(error) {
         if (error) throw error;
+
+        toasty.success({
+          title: "Color",
+          msg: colorsName[$scope.color.current] + "'s color was saved!",
+          showClose: true,
+          clickToClose: false,
+          timeout: 5000,
+          sound: false,
+          html: false,
+          shake: false,
+          theme: "default"
+        });
       });
     });
 
     $scope.$on('cancel', function() {
       $rootScope.colors[$scope.color.current].color = oldColor;
+
+      toasty.warning({
+        title: "Color",
+        msg: colorsName[$scope.color.current] + "'s changes was canceled!",
+        showClose: true,
+        clickToClose: false,
+        timeout: 5000,
+        sound: false,
+        html: false,
+        shake: false,
+        theme: "default"
+      });
     });
 
     $scope.$on('reset', function() {
       $rootScope.colors[$scope.color.current].color = $scope.color.color = '255 255 255 255';
+      
+      toasty.warning({
+        title: "Color",
+        msg: colorsName[$scope.color.current] + "'s color was reset!",
+        showClose: true,
+        clickToClose: false,
+        timeout: 5000,
+        sound: false,
+        html: false,
+        shake: false,
+        theme: "default"
+      });
     });
   }
 }
