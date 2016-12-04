@@ -59,8 +59,10 @@
 
         <!-- ammo -->
         <div class="ammo">
-          <span class="main-ammo afont ashadow" ng:style="{color: colors.ammo.color}">4</span>
-          <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}">20</span>
+          <span ng:class="{low: color.low}" a:flash enabled="color.low" start="colors.low_ammo_flash_start" end="colors.low_ammo_flash_end">
+            <span class="main-ammo afont ashadow" ng:style="{color: colors.ammo.color}">{{ color.low ? 1 : 4 }}</span>
+            <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}">{{ color.low ? 2 : 20 }}</span>
+          </span>
         </div>
 
         <!-- damage and healing -->
@@ -89,6 +91,7 @@
     }
     </script>
 
+    <script src="./bower_components/jquery-color/jquery.color.js"></script>
     <script src="./bower_components/angular/angular.js"></script>
     <script src="./bower_components/angular-animate/angular-animate.js"></script>
     <script src="./bower_components/angular-cookies/angular-cookies.js"></script>

@@ -56,7 +56,9 @@ export class HudColorsController {
       $rootScope.color.healing = $scope.color.current === 'healing';
       $rootScope.color.damage = $scope.color.current === 'damage';
       $rootScope.color.buff = $scope.color.current === 'hp_buff';
-      $rootScope.color.low = $scope.color.current === 'hp_low';
+      $rootScope.color.low = $scope.color.current === 'hp_low' || 
+        $scope.color.current === 'low_ammo_flash_start' ||
+        $scope.color.current === 'low_ammo_flash_end';
     });
 
     $scope.$watch('color.color', function() {

@@ -11,6 +11,7 @@ import { SettingsController } from './app/settings/settings.controller';
 
 // directives
 import { VideoDirective } from './app/components/video/video.directive';
+import { FlashDirective } from './app/components/flash/flash.directive';
 import { ColorPickerDirective } from './app/components/colorPicker/colorPicker.directive';
 import { ModalDirective } from './app/components/modal/modal.directive';
 
@@ -29,4 +30,5 @@ angular.module('gui', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMes
   .controller('SettingsController', SettingsController)
   .directive('apicker', ColorPickerDirective)
   .directive('modal', ModalDirective)
-  .directive('aVideo', VideoDirective);
+  .directive('aVideo', VideoDirective)
+  .directive('aFlash', FlashDirective);
