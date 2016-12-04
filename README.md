@@ -6,6 +6,10 @@ You can download the ahud installer at:
 https://github.com/ainstaller/aInstaller/releases/latest
 
 
+Preview:
+https://www.youtube.com/watch?v=7pFNmil_Atw
+
+
 ### programmers
 
 install dependencies
