@@ -7,6 +7,7 @@ const dialog = electron.dialog;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
+const isDev = require('electron-is-dev');
 const path = require('path');
 const url = require('url');
 
@@ -16,6 +17,11 @@ let mainWindow;
 let updateWindow;
 
 function aupdate() {
+  if (isDev) {
+    createWindow();
+    return;
+  }
+
   autoUpdater.addListener("update-available", (event) => {
     console.log("A new update is available");
     dialog.showMessageBox({
@@ -89,7 +95,9 @@ function createWindow () {
   }));
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {

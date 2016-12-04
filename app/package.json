@@ -19,6 +19,7 @@
     "electron-auto-updater": "^0.6.2",
     "electron-compile": "^4.0.2",
     "electron-compilers": "^4.0.5",
+    "electron-is-dev": "^0.1.2",
     "electron-json-storage": "^2.0.3",
     "fs-extra": "^1.0.0",
     "unzip": "^0.1.11"
