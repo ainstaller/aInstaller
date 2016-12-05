@@ -57,12 +57,19 @@
           </span>
         </div>
 
+        <!-- stickies or metal -->
+        <span ng:show="color.stickies || color.metal" class="afont ashadow holding-ammo" ng:style="color.stickies ? colors.stickies : colors.metal">
+          {{ color.stickies ? 4 : '' }}
+          {{ color.metal ? 200 : '' }}
+        </span>
+
         <!-- ammo -->
         <div class="ammo">
           <span ng:class="{low: color.low}" a:flash enabled="color.low" start="colors.low_ammo_flash_start" end="colors.low_ammo_flash_end">
             <span class="main-ammo afont ashadow" ng:style="{color: colors.ammo.color}">{{ color.low ? 1 : 4 }}</span>
             <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}">{{ color.low ? 2 : 20 }}</span>
           </span>
+          
         </div>
 
         <!-- damage and healing -->
