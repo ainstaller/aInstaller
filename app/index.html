@@ -77,6 +77,11 @@
              ng:style="{color: color.damage ? colors.damage.color : color.healing ? colors.healing.color : '#000','padding-left': randomDamageLeft, 'padding-right': randomDamageRight, 'padding-top': randomDamageTop, 'padding-bottom': randomDamageBottom}">
           {{ color.damage ? '-' : color.healing ? '+' : '' }}{{ randomDamage }}
         </div>
+
+        <!-- killstreak -->
+        <div class="killstreak afont ashadow" ng:style="{color: colors.killstreak.color}">
+          5
+        </div>
       </div>
 
       <div class="sidebar" ng:include="'app/sidebar/sidebar.html'"></div>
