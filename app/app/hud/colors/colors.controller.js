@@ -55,6 +55,7 @@ export class HudColorsController {
       // currently editing
       $rootScope.color.medic_flash = $scope.color.current.indexOf('ubercharge_flash') === 0;
       $rootScope.color.stickies = $scope.color.current === 'stickies';
+      $rootScope.color.no_clip = $scope.color.current === 'ammo_no_clip';
       $rootScope.color.healing = $scope.color.current === 'healing';
       $rootScope.color.damage = $scope.color.current === 'damage';
       $rootScope.color.medic = $rootScope.color.medic_flash || 

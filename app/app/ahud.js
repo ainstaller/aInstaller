@@ -304,6 +304,9 @@ class hud {
 
         } else if (i === 'ammo_reserve') {
           name = 'Ammo In Reserve';
+        
+        } else if (i === 'ammo_no_clip') {
+          name = 'Ammo No Clip';
 
         } else if (i === 'low_ammo_flash_start') {
           name = 'LowAmmo1';
