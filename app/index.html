@@ -64,12 +64,20 @@
         </span>
 
         <!-- ammo -->
-        <div class="ammo">
+        <div class="ammo" ng:hide="color.medic">
           <span ng:class="{low: color.low}" a:flash enabled="color.low" start="colors.low_ammo_flash_start" end="colors.low_ammo_flash_end">
             <span class="main-ammo afont ashadow" ng:style="{color: colors.ammo.color}">{{ color.low ? 1 : 4 }}</span>
             <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}">{{ color.low ? 2 : 20 }}</span>
+          </span>          
+        </div>
+
+        <!-- uber -->
+        <div class="uber" ng:show="color.medic">
+          <span a:flash enabled="color.medic && color.medic_flash" start="colors.ubercharge_flash_start" end="colors.ubercharge_flash_end">
+            <span ng:style="{'padding-left': color.medic_flash ? '14px' : '30px', 'color': colors.charge_percent.color, 'background-color': color.medic_flash ? 'none' : colors.ubercharge_meter.color, 'width': color.medic_flash ? '220px' : '110px'}" class="percent afont ashadow">
+              {{ color.medic_flash ? 100 : 50 }}%
+            </span>
           </span>
-          
         </div>
 
         <!-- damage and healing -->

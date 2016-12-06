@@ -276,4 +276,30 @@ body {
     padding-bottom: 50px;
     transform: translate(-50%, -50%);
   }
+
+  .uber {
+    width: 280px;
+    font-size: @font-size;
+    position: absolute;
+    left: 50%;
+    top: @top;
+    transform: translate(-50%, -50%);
+
+    padding-left: @horizontal-space;
+    padding-bottom: @vertical-space;
+
+    > span {
+      background: rgba(0,0,0, 0.4);
+      line-height: 90px;
+      width: 280px;
+      display: block;
+      text-align: center;
+
+      > .percent {
+        text-align: center;
+        width: 110px;
+        display: block;
+      }
+    }
+  }
 }

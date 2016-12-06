@@ -53,9 +53,13 @@ export class HudColorsController {
       }
 
       // currently editing
+      $rootScope.color.medic_flash = $scope.color.current.indexOf('ubercharge_flash') === 0;
       $rootScope.color.stickies = $scope.color.current === 'stickies';
       $rootScope.color.healing = $scope.color.current === 'healing';
       $rootScope.color.damage = $scope.color.current === 'damage';
+      $rootScope.color.medic = $rootScope.color.medic_flash || 
+        $scope.color.current === 'charge_percent' ||
+        $scope.color.current === 'ubercharge_meter';
       $rootScope.color.metal = $scope.color.current === 'metal';
       $rootScope.color.buff = $scope.color.current === 'hp_buff';
       $rootScope.color.low = $scope.color.current === 'hp_low' || 
