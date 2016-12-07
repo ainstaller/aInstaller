@@ -52,6 +52,13 @@ export function runBlock ($rootScope, $log, $interval) {
     $rootScope.colors = data;
   });
 
+  // load styles
+  storage.get('styles', function(error, data) {
+    if (error) throw error;
+
+    $rootScope.styles = data;
+  });
+
   $rootScope.sendEvent = function(name) {
     if (name === 'delete' || name === 'reset') {
       if (confirm('Do you really wanna ' + name + ' it?') === false) {

@@ -260,6 +260,57 @@ class hud {
         console.error(e);
       }
 
+      // styles - has to be copied first because it can replace animations file
+      // chat, charge_meter, scoreboard, nobox(bool)
+      var copyDirList = []; 
+
+      // chat
+      if (angular.isDefined(settings.styles['chat'])) {
+        if (settings.styles.chat === 'bottom_right') {
+          copyDirList.push('chat - bottom right');
+
+        } else if (settings.styles.chat === 'top_left') {
+          copyDirList.push('chat - top left');
+        }
+      }
+
+      // medic charge meter
+      if (angular.isDefined(settings.styles['charge_meter'])) {
+        if (settings.styles.charge_meter === 'bottom') {
+          copyDirList.push('medic - bottom charge meter');
+
+        } else if (settings.styles.charge_meter === 'center') {
+          copyDirList.push('medic - center charge meter & percentage');
+        }
+      }
+
+      // scoreboard
+      if (angular.isDefined(settings.styles['scoreboard'])) {
+        if (settings.styles.scoreboard === '16v6') {
+          copyDirList.push('scoreboard - 16v16 players');
+
+        } else if (settings.styles.scoreboard === 'bottom') {
+          copyDirList.push('scoreboard - bottom');
+        }
+      }
+
+      // nobox
+      if (angular.isDefined(settings.styles['nobox']) && settings.styles['nobox'] === true) {
+        copyDirList.push('style - nobox');
+      }
+
+      for (var i in copyDirList) {
+        var from = path.join('./ahud/', this.latest.string(), '/ahud-master/customization/', copyDirList[i]);
+
+        try {
+          fs.copySync(from, this.dest);
+          console.log('copied style -> ' + copyDirList[i]);
+        } catch(e) {
+          console.error(e);
+        }
+      }
+      // end: styles
+
       var hudlayoutPath = path.join(this.dest, 'scripts/hudlayout.res');
       var hudlayout = fs.readFileSync(hudlayoutPath, 'utf8');
       hudlayout = hudlayout.replace('// KNUCKLESCROSSES', crosshairs);

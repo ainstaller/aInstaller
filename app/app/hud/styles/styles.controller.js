@@ -1,20 +1,32 @@
 //import {config} from '../config';
+const storage = require('electron-json-storage');
 
 export class HudStylesController {
-  constructor ($http, $log) {
+  constructor ($log, $scope, $rootScope, toasty) {
     'ngInject';
 
-    this.$http = $http;
-    this.$log = $log;
+    if (angular.isUndefined($rootScope.styles)) {
+      $rootScope.styles = {};
+    }
 
-    this.list = '#$%123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]abcdefghijklmnopqrstuvwxyz'.split('');
-  }
+    $scope.save = function() {
+      storage.set('styles', $rootScope.styles, (error) => {
+        if (error) throw err;
 
-  new() {
-    this.creating = true;
-  }
+        toasty.success({
+          title: "Styles",
+          msg: "Style saved!",
+          showClose: true,
+          clickToClose: false,
+          timeout: 5000,
+          sound: false,
+          html: false,
+          shake: false,
+          theme: "default"
+        });
+      });
+    };
 
-  setNewCrosshair(crosshair) {
-    this.$log.debug(crosshair);
+
   }
 }

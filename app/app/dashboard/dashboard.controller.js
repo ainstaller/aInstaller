@@ -53,7 +53,8 @@ export class DashboardController {
       } else {
         ahud.install({
           crosshairs: $rootScope.crosshairs,
-          colors: $rootScope.colors
+          colors: $rootScope.colors,
+          styles: $rootScope.styles
         }, () => {
           console.log('installed');
           $timeout(function() {

@@ -1,0 +1,47 @@
+<div id="page-styles" class="container">
+  <div class="menu page full-width">
+    
+    <!-- chat -->
+    <div class="item select compact">
+      <span class="label">Chat</span>
+      <select ng:model="styles.chat" ng:change="save()">
+        <option value="">Default</option>
+        <option value="bottom_right">Bottom Right</option>
+        <option value="top_left">Top Left</option>
+      </select>
+    </div>
+
+    <!-- medic -->
+    <div class="item select compact">
+      <span class="label">Medic</span>
+      <select ng:model="styles.charge_meter" ng:change="save()">
+        <option value="">Default</option>
+        <option value="bottom">Bottom Charge Meter</option>
+        <option value="center">Center Charge Meter</option>
+      </select>
+    </div>
+
+    <!-- scoreboard -->
+    <div class="item select compact">
+      <span class="label">Scoreboard</span>
+      <select ng:model="styles.scoreboard" ng:change="save()">
+        <option value="">Default</option>
+        <option value="16v16">16v16 Players</option>
+        <option value="bottom">Bottom</option>
+      </select>
+    </div>
+
+    <!-- nobox -->
+    <div class="item check" ng:click="styles.nobox = !styles.nobox; save()">
+      <span class="label">No Box</span>
+      <div class="icon">
+        <i ng:class="{'flaticon-check52': styles.nobox, 'flaticon-close47': !styles.nobox}"></i>
+      </div>
+    </div>
+
+    <div class="item right check">
+      <span class="label">NO PREVIEW AVAILABLE FOR STYLES</span>
+    </div>
+
+  </div>
+</div>
