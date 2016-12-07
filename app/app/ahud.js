@@ -1,3 +1,4 @@
+import deepEqual from 'deep-equal';
 import {config} from './config';
 import unzip from 'unzip';
 import path from 'path';
@@ -55,7 +56,7 @@ class hud {
         this.current = new version();
       }
 
-      if (typeof cb !== 'undefined') {
+      if (angular.isFunction(cb)) {
         cb();
       }
 
@@ -72,7 +73,7 @@ class hud {
       }
 
       this.current = new version(mmo);
-      if (typeof cb !== 'undefined') {
+      if (angular.isFunction(cb)) {
         cb(this.current);
       }
     }
@@ -101,7 +102,7 @@ class hud {
         self.latest = new version(data);
         console.log(self.latest.year, self.latest.month, self.latest.day);
 
-        if (typeof cb !== 'undefined') {
+        if (angular.isFunction(cb)) {
           cb(self.latest);
         }
       });
@@ -126,7 +127,7 @@ class hud {
     return false;
   }
 
-  getSteamPath() {
+  getSteamPath(cb) {
     if (os.platform() === 'win32') {
       var cproc = require('child_process');
       var utilsPath = path.join(__dirname, '../utils.exe');
@@ -142,6 +143,10 @@ class hud {
         // remove new line
         this.steamPath = stdout.substr(0, stdout.length - 1);
         this.dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH);
+
+        if (angular.isFunction(cb)) {
+          cb();
+        }
       });
     } else {
       alert(os.platform() + ' system is not supported!');
@@ -151,8 +156,8 @@ class hud {
 
   isUpToDate(cb) {
     if (!this.current.empty() && typeof this.latest !== 'undefined') {
-      console.log(this.current);
-      console.log(this.latest);
+      //console.log(this.current);
+      //console.log(this.latest);
 
       return this.current.year === this.latest.year && 
         this.current.month === this.latest.month &&
@@ -162,24 +167,17 @@ class hud {
     return false;
   }
 
-  isChanged() {
-    return false;
+  isChanged(backup, current) {
+    return deepEqual(current, backup) === false;
   }
 
-  state() {
+  state(backup, current) {
     if (this.isInstalled()) {
       if (!this.isUpToDate()) {
         return UPDATE_AVAILABLE; 
       }
 
-      // not changed and up to date
-      if (!this.isChanged() && this.isUpToDate()) {
-        return INSTALLED;
-      }
-
-      if (this.isChanged()) {
-        return CHANGED;
-      }
+      return this.isChanged(backup, current) ? CHANGED : INSTALLED;
     }
 
     return NOT_INSTALLED;
@@ -187,15 +185,20 @@ class hud {
 
 
   remove(cb) {
+    console.log('removing hud...');
+
     try {
       fs.emptyDirSync(this.dest);
       this.current = new version();
       console.log('removed hud');
     } catch(e) {
+      console.log('error removing hud');
       console.error(e);
     }
 
-    cb();
+    if (angular.isFunction(cb)) {
+      cb();
+    }
   }
 
   install(settings, cb) {
@@ -454,7 +457,7 @@ class hud {
         // unzip
         var r = fs.createReadStream(fileName).pipe(unzip.Extract({ path: fileName.replace('.zip', '') }));
         r.on('close', () => {
-          if (typeof cb !== 'undefined') {
+          if (angular.isFunction(cb)) {
             cb();
           }
         });

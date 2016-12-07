@@ -16,6 +16,7 @@
   "dependencies": {
     "babel-preset-es2016-node5": "^1.1.2",
     "babel-register": "^6.18.0",
+    "deep-equal": "^1.0.1",
     "electron-auto-updater": "^0.6.2",
     "electron-compile": "^4.0.2",
     "electron-compilers": "^4.0.5",

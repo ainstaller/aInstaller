@@ -31,6 +31,8 @@ export function runBlock ($rootScope, $log, $interval) {
     video_url: 'https://www.youtube.com/watch?v=3YBsmwZi56s'
   };
 
+  $rootScope.loaded = 0;
+
   // load settings
   storage.get('settings', function(error, data) {
     if (error) throw error;
@@ -43,6 +45,7 @@ export function runBlock ($rootScope, $log, $interval) {
     if (error) throw error;
 
     $rootScope.crosshairs = data;
+    $rootScope.loaded++;
   });
 
   // load colors
@@ -50,6 +53,7 @@ export function runBlock ($rootScope, $log, $interval) {
     if (error) throw error;
 
     $rootScope.colors = data;
+    $rootScope.loaded++;
   });
 
   // load styles
@@ -57,6 +61,7 @@ export function runBlock ($rootScope, $log, $interval) {
     if (error) throw error;
 
     $rootScope.styles = data;
+    $rootScope.loaded++;
   });
 
   $rootScope.sendEvent = function(name) {

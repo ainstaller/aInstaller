@@ -3,8 +3,8 @@
 <div class="menu">
   <!-- dashboard -->
   <a ui:sref="dashboard" class="item" ng:hide="editMode">
-    <span class="label">Dashboard</span>
-    <div class="icon">
+    <span class="label" ng:style="{'color': hasChanges() ? '#FF7416' : '#fafafa'}">Dashboard</span>
+    <div class="icon" ng:style="{'color': hasChanges() ? '#FF7416' : '#fafafa'}">
       <i class="flaticon-bed24"></i>
     </div>
   </a>

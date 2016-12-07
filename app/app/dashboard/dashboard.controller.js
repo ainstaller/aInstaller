@@ -4,27 +4,85 @@ export class DashboardController {
   constructor ($http, $log, $scope, $rootScope, $timeout, toasty) {
     'ngInject';
 
+    $rootScope.hasChanges = function() {
+      return ahud.isChanged($rootScope.backup, $rootScope.current());
+    };
+
+    $rootScope.$watch('loaded', function() {
+      if ($rootScope.loaded == 3) {
+        if (angular.isUndefined($rootScope.backup)) {
+          $rootScope.backup = angular.copy($rootScope.current());
+        }
+
+        $scope.refresh(() => {
+          $rootScope.loading = false;
+        });
+      }
+    });
+
+    $rootScope.current = function() {
+      return {
+        crosshairs: $rootScope.crosshairs,
+        colors: $rootScope.colors,
+        styles: $rootScope.styles
+      };
+    };
+
     $scope.version = {
       current: 'not installed!',
       latest: ''
     };
 
     $scope.refresh = function(cb) {
-      ahud.latestVersion(() => {
-        $scope.version.latest = ahud.latest.string();
+      var r = function() {
+        ahud.latestVersion(() => {
+          $scope.version.latest = ahud.latest.string();
 
-        ahud.currentVersion(() => {
-          $scope.version.current = ahud.current.string();
-          $scope.state = ahud.state();
+          ahud.currentVersion(() => {
+            $scope.version.current = ahud.current.string();
+            $scope.state = ahud.state($rootScope.backup, $rootScope.current());
+            console.log('CURRENT STATE -> ' + $scope.state);
+            console.log('IS CHANGED ' + ahud.isChanged($rootScope.backup, $rootScope.current()));
 
-          if (typeof cb !== 'undefined') {
-            cb();
-          }
+            if (angular.isFunction(cb)) {
+              cb();
+            }
+          });
         });
-      });
+      };
+
+      if (angular.isUndefined(ahud.steamPath)) {
+        $scope.state = ahud.state($rootScope.backup, $rootScope.current());
+        r();
+      } else {
+        $scope.state = ahud.state($rootScope.backup, $rootScope.current());
+        r();
+      }
     };
 
-    $scope.state = ahud.state();
+    var doneInstall = () => {
+        console.log('installed');
+        $timeout(function() {
+          $rootScope.backup = angular.copy($rootScope.current());
+          $scope.refresh(() => {
+            $rootScope.loading = false;
+          });
+
+          toasty.success({
+            title: "Dashboard",
+            msg: "ahud is installed and up to date!",
+            showClose: true,
+            clickToClose: false,
+            timeout: 5000,
+            sound: false,
+            html: false,
+            shake: false,
+            theme: "default"
+          });
+        }, 1000);
+      };
+    
+    //$scope.state = ahud.state($rootScope.backup, $rootScope.current());
     $scope.changeState = function() {
       $rootScope.loading = true;
 
@@ -50,37 +108,24 @@ export class DashboardController {
           }, 1000);
         });
 
-      } else {
-        ahud.install({
-          crosshairs: $rootScope.crosshairs,
-          colors: $rootScope.colors,
-          styles: $rootScope.styles
-        }, () => {
-          console.log('installed');
-          $timeout(function() {
-            $scope.refresh(() => {
-              $rootScope.loading = false;
-            });
+      } else if ($scope.state === 'CHANGED') {
+        ahud.remove(() => {
+          console.log('removed');
+          ahud.install($rootScope.current(), doneInstall);
+        })
+      } else if ($scope.state === 'NOT_INSTALLED') {
+        ahud.install($rootScope.current(), doneInstall);
 
-            toasty.success({
-              title: "Dashboard",
-              msg: "ahud is installed and up to date!",
-              showClose: true,
-              clickToClose: false,
-              timeout: 5000,
-              sound: false,
-              html: false,
-              shake: false,
-              theme: "default"
-            });
-          }, 1000);
-        });
+      } else if ($scope.state === 'UPDATE_AVAILABLE') {
+        alert('update available');
       }
     };
 
-    $scope.refresh(() => {
-      $rootScope.loading = false;
-    });
+    if ($rootScope.loaded == 3) {
+      $scope.refresh(() => {
+        $rootScope.loading = false;
+      });
+    }
 
     this.$http = $http;
     this.$log = $log;
