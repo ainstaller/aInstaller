@@ -13,6 +13,7 @@ export class HudColorsController {
       'healing': 'Healing Numbers',
       'ammo': 'Ammo In Clip',
       'ammo_reserve': 'Ammo In Reserve',
+      'ammo_no_clip': 'Ammo No Clip',
       'low_ammo_flash_start': 'Low Ammo Flash Start',
       'low_ammo_flash_end': 'Low Ammo Flash End',
       'stickies': 'Stickies (Demoman)',

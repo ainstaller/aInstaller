@@ -67,12 +67,11 @@
         <div class="ammo" ng:hide="color.medic">
           <span ng:class="{low: color.low}" a:flash enabled="color.low" start="colors.low_ammo_flash_start" end="colors.low_ammo_flash_end">
             <span class="main-ammo afont ashadow" ng:style="{color: color.no_clip ? colors.ammo_no_clip.color : colors.ammo.color}">
-              <span ng:hide="color.no_clip">{{ color.low ? 2 : 20 }}</span>
-              <span ng:show="color.no_clip">0</span>
+              {{ color.low ? 2 : 4 }}
             </span>
 
-            <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}">
-              {{ color.low ? 2 : 20 }}
+            <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}" ng:hide="color.no_clip">
+              {{ color.low ? 0 : 20 }}
             </span>
           </span>          
         </div>
