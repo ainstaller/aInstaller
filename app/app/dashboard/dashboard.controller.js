@@ -9,7 +9,7 @@ export class DashboardController {
     };
 
     $rootScope.$watch('loaded', function() {
-      if ($rootScope.loaded == 3) {
+      if ($rootScope.loaded === true) {
         if (angular.isUndefined($rootScope.backup)) {
           $rootScope.backup = angular.copy($rootScope.current());
         }
@@ -121,7 +121,7 @@ export class DashboardController {
       }
     };
 
-    if ($rootScope.loaded == 3) {
+    if ($rootScope.loaded === true) {
       $scope.refresh(() => {
         $rootScope.loading = false;
       });

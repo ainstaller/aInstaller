@@ -31,38 +31,32 @@ export function runBlock ($rootScope, $log, $interval) {
     video_url: 'https://www.youtube.com/watch?v=3YBsmwZi56s'
   };
 
-  $rootScope.loaded = 0;
-
-  // load settings
-  storage.get('settings', function(error, data) {
+  $rootScope.loaded = false;
+  storage.has('settings', function(error, has) {
     if (error) throw error;
 
-    $rootScope.settings = data;
+    // load settings
+    storage.getMany(['settings', 'crosshairs', 'colors', 'styles'], function(error, data) {
+      if (error) throw error;
+
+      $rootScope.crosshairs = data.crosshairs;
+
+      if (has) {
+        $rootScope.settings = data.settings;
+      } else {
+        $rootScope.settings = {
+          video: true,
+          video_url: 'https://www.youtube.com/watch?v=3YBsmwZi56s'
+        };
+      }
+
+      $rootScope.colors = data.colors;
+      $rootScope.styles = data.styles;
+      $rootScope.loaded = true;
+    });
   });
 
-  // load crosshairs
-  storage.get('crosshairs', function(error, data) {
-    if (error) throw error;
 
-    $rootScope.crosshairs = data;
-    $rootScope.loaded++;
-  });
-
-  // load colors
-  storage.get('colors', function(error, data) {
-    if (error) throw error;
-
-    $rootScope.colors = data;
-    $rootScope.loaded++;
-  });
-
-  // load styles
-  storage.get('styles', function(error, data) {
-    if (error) throw error;
-
-    $rootScope.styles = data;
-    $rootScope.loaded++;
-  });
 
   $rootScope.sendEvent = function(name) {
     if (name === 'delete' || name === 'reset') {
