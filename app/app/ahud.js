@@ -210,6 +210,7 @@ class hud {
 
       // crosshairs
       var crosshairs = '';
+      var crosshairFonts = '';
       var crosshairsDamageFlashColor = '';
       for (var i in settings.crosshairs) {
         var ch = settings.crosshairs[i];
@@ -233,7 +234,7 @@ class hud {
           "fgcolor" 		  "${this.parseColor(ch.color)}"
           "enabled" 		  "${ch.enabled ? '1' : '0'}"
           "visible" 		  "${ch.enabled ? '1' : '0'}"
-          "font"			    "size:${ch.size},outline:${ch.outline ? 'on' : 'off'}"
+          "font"			    "ch${ch.id}"
 
           "controlName"	  "CExLabel"
           "fieldName"	 	  "Crosshair${ch.id}"
@@ -245,6 +246,19 @@ class hud {
           "textAlignment"	"center"
         }
         `
+
+        crosshairFonts += `
+        "ch${ch.id}"
+        {
+          "1"
+          {
+            "name"	    "KnucklesCrosses"
+            "tall"	    "${ch.size}"
+            "antialias" "${ch.antialiasing ? 1 : 0}"
+            "additive"	"0"
+            "outline"	  "${ch.outline ? 1 : 0}"
+          }
+        }`
       }
 
       console.log(crosshairs);
@@ -326,6 +340,17 @@ class hud {
       chDmgFlashColors = chDmgFlashColors.replace(/Animate[\s]+KnucklesCrosses[\s]+FgColor[\s]+"CrosshairDamage"[\s]+Linear[\s]+0.0[\s]+0.0/g, crosshairsDamageFlashColor);
       
       fs.writeFileSync(crosshairDamageFlashColorPath, chDmgFlashColors);
+
+      // crosshair's fonts
+      var crosshairsFontsPath = path.join(this.dest, 'resource/scheme/xhairs.res');
+      fs.writeFileSync(crosshairsFontsPath, `
+      Scheme
+      {
+        Fonts
+        {
+          ${crosshairFonts}
+        }
+      }`);
 
       // colors
       var hudcolorsPath = path.join(this.dest, 'resource/scheme/colors.res');
