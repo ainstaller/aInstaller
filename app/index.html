@@ -42,7 +42,7 @@
       <div class="hud-layer" ng:style="{'background-image': settings.video ? 'none' : 'url(http://orig10.deviantart.net/4599/f/2012/298/f/a/tf2_alpine_landscape_by_mlebled-d5iwdq8.jpg)'}">
         <!-- crosshair -->
         <div class="item crosshair" ng:repeat="(name, crosshair) in crosshairs" 
-             ng:if="crosshair.enabled && name != 'list' && name != '' && name != 'current' && name != 'new'"
+             ng:if="crosshair.enabled && name != 'list' && name != ''"
              ng:click="editCrosshair(name)" ng:class="{outline: crosshair.outline}"
              ng:style="{color: crosshair.color, 'font-size': (crosshairScale*1)*crosshair.size, width: crosshairScale*crosshair.size, height: crosshairScale*crosshair.size }">
           {{ crosshair.crosshair }}
