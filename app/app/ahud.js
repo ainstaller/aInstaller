@@ -129,6 +129,17 @@ class hud {
 
   getSteamPath(cb) {
     if (os.platform() === 'win32') {
+      if (angular.isDefined(this.settings) && angular.isDefined(this.settings.hl2) && this.settings.hl2.length > 0) {
+        this.steamPath = this.settings.hl2.substr(0, this.settings.hl2.indexOf('steamapps'));
+        this.dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH);
+
+        if (angular.isFunction(cb)) {
+          return cb();
+        }
+
+        return;
+      }
+
       var cproc = require('child_process');
       var utilsPath = path.join(__dirname, '../utils.exe');
       cproc.execFile(`${utilsPath}`, ['-steam-location'], (err, stdout, stderr) => {

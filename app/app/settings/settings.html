@@ -1,6 +1,13 @@
 <div id="page-settings" class="container" ng:init="hideHudMenu = false">
   <div class="menu page full-width">
 
+    <!-- hl2 -->
+    <div class="item text tooltip" ng:click="choose()">
+      <span class="tooltiptext">Leave blank for auto!</span>
+      <span class="label">hl2.exe</span>
+      <input class="text" contenteditable="true" ng:blur="restore()" ng:model="settings.hl2">
+    </div>
+
     <!-- crosshairs -->
     <div class="item check" ng:click="settings.video = !settings.video; save()">
       <span class="label">Video</span>

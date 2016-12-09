@@ -13,6 +13,7 @@ export class DashboardController {
         if (angular.isUndefined($rootScope.backup)) {
           $rootScope.backup = angular.copy($rootScope.current());
         }
+        ahud.settings = $rootScope.settings;
 
         $scope.refresh(() => {
           $rootScope.loading = false;
