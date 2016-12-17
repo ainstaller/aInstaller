@@ -10,6 +10,7 @@ const BrowserWindow = electron.BrowserWindow;
 const isDev = require('electron-is-dev');
 const path = require('path');
 const url = require('url');
+require('./startup');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

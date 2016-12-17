@@ -1,6 +1,6 @@
 {
   "name": "ainstaller",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "for ahud",
   "author": "UnnoTed",
   "license": "MIT",
@@ -14,6 +14,7 @@
     "electron": "^1.4.1"
   },
   "dependencies": {
+    "auto-launch": "^5.0.1",
     "babel-preset-es2016-node5": "^1.1.2",
     "babel-register": "^6.18.0",
     "deep-equal": "^1.0.1",

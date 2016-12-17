@@ -1,13 +1,25 @@
 //import {config} from '../config';
 import {remote} from 'electron';
 const storage = require('electron-json-storage');
+var updaterAutoLauncher = require('../../startup');
 
 export class SettingsController {
   constructor ($http, $log, $scope, $rootScope, toasty) {
     'ngInject';
     $rootScope.loading = false;
 
+    if (angular.isUndefined($rootScope.settings['auto_updater'])) {
+      $rootScope.settings['auto_updater'] = true;
+      $scope.save();
+    }
+
     $scope.save = function() {
+      if ($rootScope.settings.auto_updater) {
+        updaterAutoLauncher.enable();
+      } else {
+        updaterAutoLauncher.disable();
+      }
+
       storage.set('settings', $rootScope.settings, function(error) {
         if (error) throw error;
 
