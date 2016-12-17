@@ -1,4 +1,6 @@
 import {config} from '../config';
+const storage = require('electron-json-storage');
+var updaterAutoLauncher = require('../../startup');
 
 export class DashboardController {
   constructor ($http, $log, $scope, $rootScope, $timeout, toasty) {
@@ -17,6 +19,15 @@ export class DashboardController {
 
         $scope.refresh(() => {
           $rootScope.loading = false;
+
+          if (angular.isUndefined($rootScope.settings['auto_updater'])) {
+            $rootScope.settings['auto_updater'] = true;
+            updaterAutoLauncher.enable();
+            
+            storage.set('settings', $rootScope.settings, function(error) {
+              if (error) throw error;
+            });
+          }
         });
       }
     });
