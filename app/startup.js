@@ -1,4 +1,4 @@
-const AutoLaunch = require('auto-launch');
+const elevate = require('node-windows').elevate;
 const path = require('path');
 const fs = require('fs-extra');
 
@@ -16,10 +16,27 @@ try {
 console.log(asarAupdaterPath);
 console.log(aupdaterPath);
 
-var updaterAutoLauncher = new AutoLaunch({
-  name: 'aupdater',
-  path: aupdaterPath,
-});
+class AutoLaunch {
+  create(exePath) {
+    let cmd = `schtasks /Create /tn "aInstaller" /sc onlogon /rl highest /tr "${aupdaterPath}"`;
+    console.log(elevate(cmd));
+  }
+
+  remove() {
+    let cmd = `schtasks /Delete /tn "aInstaller" /f`;
+    console.log(elevate(cmd));
+  }
+
+  enable() {
+    this.create();
+  }
+
+  disable() {
+    this.remove();
+  }
+}
+
+var updaterAutoLauncher = new AutoLaunch();
 
 //updaterAutoLauncher.enable();
 //updaterAutoLauncher.disable();
