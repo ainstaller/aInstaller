@@ -6,7 +6,7 @@ var asarAupdaterPath = path.join(__dirname, './aupdater.exe');
 var aupdaterPath = path.join(process.env.APPDATA, "ainstaller/aupdater.exe");
 
 try {
-  if (fs.existsSync(aupdaterPath)) {
+  if (!fs.existsSync(aupdaterPath)) {
     fs.createReadStream(asarAupdaterPath).pipe(fs.createWriteStream(aupdaterPath));
   }
 } catch(e) {
