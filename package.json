@@ -32,6 +32,7 @@
     "appId": "com.unnoted.ainstaller",
     "category": "gaming",
     "compression": "maximum",
+    "asar": false,
     "win": {
       "publish": ["github"]
     }
