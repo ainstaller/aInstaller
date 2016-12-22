@@ -120,16 +120,13 @@ export class DashboardController {
           }, 1000);
         });
 
-      } else if ($scope.state === 'CHANGED') {
+      } else if ($scope.state === 'CHANGED' || $scope.state === 'UPDATE_AVAILABLE') {
         ahud.remove(() => {
           console.log('removed');
           ahud.install($rootScope.current(), doneInstall);
         })
       } else if ($scope.state === 'NOT_INSTALLED') {
         ahud.install($rootScope.current(), doneInstall);
-
-      } else if ($scope.state === 'UPDATE_AVAILABLE') {
-        alert('update available');
       }
     };
 
