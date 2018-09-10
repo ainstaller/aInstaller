@@ -12,6 +12,10 @@
     <div ng:hide="totalCrosshairs > 8" class="button" ng:click="newCrosshair()">
       New Crosshair
     </div>
+
+    <div class="button" ng:click="quickInjection()">
+      Quick change
+    </div>
   </div>
 
   <!-- new -->
@@ -55,11 +59,11 @@
         </div>
       </div>
 
-      <!-- anti aliasing -->
-      <div class="item check" ng:click="crosshairs.current.antialiasing = !crosshairs.current.antialiasing">
-        <span class="label">Anti-aliasing</span>
+      <!-- toggleable -->
+      <div class="item check" ng:click="crosshairs.current.toggleable = !crosshairs.current.toggleable">
+        <span class="label">Toggleable</span>
         <div class="icon">
-          <i ng:class="{'flaticon-check52': crosshairs.current.antialiasing, 'flaticon-close47': !crosshairs.current.antialiasing}"></i>
+          <i ng:class="{'flaticon-check52': crosshairs.current.toggleable, 'flaticon-close47': !crosshairs.current.toggleable}"></i>
         </div>
       </div>
 

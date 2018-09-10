@@ -10,6 +10,10 @@ export class DashboardController {
       return ahud.isChanged($rootScope.backup, $rootScope.current());
     };
 
+    $rootScope.$watch(() => ahud.loadingText, () => {
+      $rootScope.loadingText = ahud.loadingText;
+    });
+
     $rootScope.$watch('loaded', function() {
       if ($rootScope.loaded === true) {
         if (angular.isUndefined($rootScope.backup)) {
@@ -34,6 +38,7 @@ export class DashboardController {
 
     $rootScope.current = function() {
       return {
+        background: $rootScope.settings.background,
         crosshairs: $rootScope.crosshairs,
         colors: $rootScope.colors,
         styles: $rootScope.styles
@@ -138,29 +143,5 @@ export class DashboardController {
 
     this.$http = $http;
     this.$log = $log;
-    this.getNews();
-  }
-
-  getNews() {
-    return;
-    var self = this;
-    let newsURL = 'http://steamcommunity.com/groups/ahud/rss';
-    this.$http.get(newsURL).then(function(response) {
-      //console.log(response.data);
-      //self.onGetNews(response, self);
-    }, this.onErr);
-
-    //this.$http.get(config.API_URL + '/api/news').then(function(response) {
-    //  self.onGetNews(response, self);
-    //}, this.onErr);
-  }
-
-  onGetNews(response, self) {
-    self.news = response.data;
-    self.$log.debug(response.data);
-  }
-
-  onErr() {
-    alert('Error: News can\'t be loaded, try again.');
   }
 }

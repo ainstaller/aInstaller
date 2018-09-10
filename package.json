@@ -17,16 +17,15 @@
   "license": "MIT",
   "devDependencies": {
     "babel-register": "^6.18.0",
-    "electron": "^1.4.1",
-    "electron-compilers": "^4.0.5"
+    "electron": "^2.0.8",
+    "electron-compilers": "^4.0.7"
   },
   "dependencies": {
     "babel-register": "^6.18.0",
-    "electron-compilers": "^4.0.5",
-    "electron-compile": "^4.0.2",
+    "electron-compile": "^4.0.4",
     "electron-json-storage": "^2.0.3",
     "fs-extra": "^1.0.0",
-    "unzip": "^0.1.11"
+    "node-unzip-2": "^0.2.7"
   },
   "build": {
     "appId": "com.unnoted.ainstaller",
@@ -34,7 +33,9 @@
     "compression": "maximum",
     "asar": false,
     "win": {
-      "publish": ["github"]
+      "publish": [
+        "github"
+      ]
     }
   }
 }

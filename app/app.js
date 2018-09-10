@@ -19,9 +19,12 @@ let updateWindow;
 
 function aupdate() {
   if (isDev) {
+    console.log("dev mode enabled");
     createWindow();
     return;
   }
+
+  console.log("checking for updates");
 
   autoUpdater.addListener("update-available", (event) => {
     console.log("A new update is available");

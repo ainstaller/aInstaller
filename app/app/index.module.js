@@ -8,6 +8,8 @@ import { HudController } from './app/hud/hud.controller';
 import { HudCrosshairsController } from './app/hud/crosshairs/crosshairs.controller';
 import { HudColorsController } from './app/hud/colors/colors.controller';
 import { HudStylesController } from './app/hud/styles/styles.controller';
+import { HudBackgroundController } from './app/hud/background/background.controller';
+import { HudNewsController } from './app/news/news.controller';
 import { SettingsController } from './app/settings/settings.controller';
 
 // directives
@@ -27,6 +29,8 @@ angular.module('gui', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngMes
   .controller('HudController', HudController)
   .controller('HudCrosshairsController', HudCrosshairsController)
   .controller('HudColorsController', HudColorsController)
+  .controller('HudBackgroundController', HudBackgroundController)
+  .controller('HudNewsController', HudNewsController)
   .controller('HudStylesController', HudStylesController)
   .factory('HudCrosshairsFactory', HudCrosshairsFactory)
   .controller('SettingsController', SettingsController)

@@ -29,6 +29,28 @@ export function routerConfig ($stateProvider, $urlRouterProvider) {
       templateUrl: 'app/hud/styles/styles.html',
       controller: 'HudStylesController',
     })
+    .state('hud.background', {
+      url: '/background',
+      templateUrl: 'app/hud/background/background.html',
+      controller: 'HudBackgroundController',
+      onEnter: function($rootScope) {
+        $rootScope.customBackground = true;
+      },
+      onExit: function($rootScope) {
+        $rootScope.customBackground = false;
+      },
+    })
+    .state('news', {
+      url: '/news',
+      templateUrl: 'app/news/news.html',
+      controller: 'HudNewsController',
+      onEnter: function($rootScope) {
+        $rootScope.hideHud = true;
+      },
+      onExit: function($rootScope) {
+        $rootScope.hideHud = false;
+      },
+    })
     .state('settings', {
       url: '/settings',
       templateUrl: 'app/settings/settings.html',

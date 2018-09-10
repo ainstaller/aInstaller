@@ -44,6 +44,7 @@ export class HudCrosshairsController {
         color: 'rgba(255, 255, 255, 255)',
         outline: false,
         antialiasing: false,
+        toggle: false,
         dmgFlash: false,
         dmgFlashColor: 'rgba(255, 255, 255, 255)'
       };
@@ -71,6 +72,26 @@ export class HudCrosshairsController {
       } else if ($rootScope.crosshairs.current.size > 50) {
         $rootScope.crosshairs.current.size = 50;
       }
+    };
+
+    $scope.quickInjection = function() {
+      if (confirm('Quick Change updates only the crosshairs changes so that you can reload them in-game through the command: "hud_reloadscheme"') === false) {
+        return;
+      }
+
+      ahud.quickInject($rootScope.current(), () => {
+        toasty.success({
+          title: "Crosshair",
+          msg: 'done, now run "hud_reloadscheme" in tf2\'s console',
+          showClose: true,
+          clickToClose: false,
+          timeout: 5000,
+          sound: false,
+          html: false,
+          shake: false,
+          theme: "default"
+        });
+      });
     };
 
     $scope.$on('save', function() {

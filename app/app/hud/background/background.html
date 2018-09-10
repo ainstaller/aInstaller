@@ -1,0 +1,18 @@
+<div id="page-background" class="container">
+  <div class="menu page full-width">
+    <!-- enabled -->
+    <div class="item check" ng:click="settings.background.enabled = !settings.background.enabled; save()">
+      <span class="label">Enabled</span>
+      <div class="icon">
+        <i ng:class="{'flaticon-check52': settings.background.enabled, 'flaticon-close47': !settings.background.enabled}"></i>
+      </div>
+    </div>
+
+    <!-- chat -->
+    <div class="item text tooltip" ng:show="settings.background.enabled">
+      <span class="tooltiptext">Click to change the background!</span>
+      <span class="label">Change</span>
+      <input class="text" contenteditable="true" ng:click="change()" ng:model="settings.background.path">
+    </div>
+  </div>
+</div>

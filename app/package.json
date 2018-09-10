@@ -11,7 +11,8 @@
   "postinstall": "install-app-deps",
   "repository": "https://github.com/ainstaller/ainstaller",
   "devDependencies": {
-    "electron": "^1.4.1"
+    "electron": "^2.0.8",
+    "electron-compilers": "^4.0.7"
   },
   "dependencies": {
     "auto-launch": "^5.0.1",
@@ -19,13 +20,13 @@
     "babel-register": "^6.18.0",
     "deep-equal": "^1.0.1",
     "electron-auto-updater": "^0.6.2",
-    "electron-compile": "^4.0.2",
-    "electron-compilers": "^4.0.5",
+    "electron-compile": "^4.0.4",
     "electron-is-dev": "^0.1.2",
     "electron-json-storage": "^2.0.3",
     "fs-extra": "^1.0.0",
+    "node-unzip-2": "^0.2.7",
     "node-windows": "^0.1.12",
-    "unzip": "^0.1.11"
+    "rss-parser": "^3.4.3"
   },
   "engines": {
     "node": ">=0.10.0"

@@ -14,9 +14,8 @@ https://www.youtube.com/watch?v=7pFNmil_Atw
 
 install dependencies
 ```sh
-npm install
-cd app
-npm install && bower install
+npm install -g electron-builder && npm install
+cd app && npm install && bower install
 ```
 
 build

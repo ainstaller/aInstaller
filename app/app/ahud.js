@@ -1,6 +1,6 @@
 import deepEqual from 'deep-equal';
 import {config} from './config';
-import unzip from 'unzip';
+import unzip from 'node-unzip-2';
 import path from 'path';
 import fs from 'fs-extra';
 import os from 'os';
@@ -9,6 +9,11 @@ const UPDATE_AVAILABLE = 'UPDATE_AVAILABLE';
 const NOT_INSTALLED = 'NOT_INSTALLED';
 const INSTALLED = 'INSTALLED';
 const CHANGED = 'CHANGED';
+
+function changeExt(fileName, newExt) {
+  var _tmp;
+  return fileName.substr(0, ~(_tmp = fileName.lastIndexOf('.')) ? _tmp : fileName.length) + '.' + newExt;
+}
 
 class version {
   constructor(str) {
@@ -212,6 +217,86 @@ class hud {
     }
   }
 
+  buildCrosshairs(settings) {
+    // crosshairs
+    var crosshairs = '';
+    var toggleableCrosshairs = '';
+    var crosshairsDamageFlashColor = '';
+    for (var i in settings.crosshairs) {
+      var ch = settings.crosshairs[i];
+
+      if (ch.color === '') {
+        ch.color = '255 255 255 255';
+      }
+
+      console.log(ch);
+      if (ch.dmgFlash === true) {
+        crosshairsDamageFlashColor += `
+        Animate Crosshair${ch.id}	 	FgColor 	"${this.parseColor(ch.dmgFlashColor)}" 		Linear 0.0  0.0
+        Animate Crosshair${ch.id}	 	FgColor 	"${this.parseColor(ch.color)}" 		      	Linear 0.15 0.0
+        `;
+      }
+
+      let chdata = `
+      Crosshair${ch.id}
+      {
+        "labelText"		  "${ch.crosshair}"
+        "fgcolor" 		  "${this.parseColor(ch.color)}"
+        "enabled" 		  "${ch.enabled ? '1' : '0'}"
+        "visible" 		  "${ch.enabled ? '1' : '0'}"
+        "font"			    "size:${ch.size},outline:${ch.outline ? "on" : "off"}"
+
+        "controlName"	  "CExLabel"
+        "fieldName"	 	  "Crosshair${ch.id}"
+        "zpos"			    "0"
+        "xpos" 		 	    "c-25"
+        "ypos" 		 	    "c-25"
+        "wide" 		 	    "50"
+        "tall" 		 	    "50"
+        "textAlignment"	"center"
+      }
+      `;
+
+      if (ch.toggleable) {
+        toggleableCrosshairs += chdata;
+      } else {
+        crosshairs += chdata;
+      }
+    }
+
+    return {
+      crosshairs,
+      toggleableCrosshairs,
+      crosshairsDamageFlashColor,
+    };
+  }
+
+  quickInject(settings, cb) {
+    var ch = this.buildCrosshairs(settings);
+    var crosshairs = ch.crosshairs;
+
+    var hudlayoutPath = path.join(this.dest, 'scripts/hudlayout.res');
+    var hudlayout = fs.readFileSync(hudlayoutPath, 'utf8');
+
+    // removes current crosshairs from hudlayout.res
+    while (true) {
+      var idx = hudlayout.indexOf('Crosshair1');
+      if (idx === -1) {
+        break;
+
+      } else {
+        var cidx = hudlayout.substr(idx).indexOf('}')+1;
+        hudlayout = hudlayout.substr(0, idx) + hudlayout.substr(idx+cidx);
+      }
+    }
+    
+    var idx = hudlayout.indexOf('{') + 2;
+    hudlayout = hudlayout.substr(0, idx) + crosshairs + hudlayout.substr(idx);
+
+    fs.writeFileSync(hudlayoutPath, hudlayout);
+    cb();
+  }
+
   install(settings, cb) {
     this.download(() => {
       console.log('downloaded');
@@ -220,57 +305,11 @@ class hud {
       console.log('hud dest: ' + this.dest);
 
       // crosshairs
-      var crosshairs = '';
-      var crosshairFonts = '';
-      var crosshairsDamageFlashColor = '';
-      for (var i in settings.crosshairs) {
-        var ch = settings.crosshairs[i];
+      var ch = this.buildCrosshairs(settings);
 
-        if (ch.color === '') {
-          ch.color = '255 255 255 255';
-        }
-
-        console.log(ch);
-        if (ch.dmgFlash === true) {
-          crosshairsDamageFlashColor += `
-          Animate Crosshair${ch.id}	 	FgColor 	"${this.parseColor(ch.dmgFlashColor)}" 		Linear 0.0  0.0
-	        Animate Crosshair${ch.id}	 	FgColor 	"${this.parseColor(ch.color)}" 		      	Linear 0.15 0.0
-          `;
-        }
-
-        crosshairs += `
-        Crosshair${ch.id}
-        {
-          "labelText"		  "${ch.crosshair}"
-          "fgcolor" 		  "${this.parseColor(ch.color)}"
-          "enabled" 		  "${ch.enabled ? '1' : '0'}"
-          "visible" 		  "${ch.enabled ? '1' : '0'}"
-          "font"			    "ch${ch.id}"
-
-          "controlName"	  "CExLabel"
-          "fieldName"	 	  "Crosshair${ch.id}"
-          "zpos"			    "0"
-          "xpos" 		 	    "c-25"
-          "ypos" 		 	    "c-25"
-          "wide" 		 	    "50"
-          "tall" 		 	    "50"
-          "textAlignment"	"center"
-        }
-        `
-
-        crosshairFonts += `
-        "ch${ch.id}"
-        {
-          "1"
-          {
-            "name"	    "KnucklesCrosses"
-            "tall"	    "${ch.size}"
-            "antialias" "${ch.antialiasing ? 1 : 0}"
-            "additive"	"0"
-            "outline"	  "${ch.outline ? 1 : 0}"
-          }
-        }`
-      }
+      var crosshairs = ch.crosshairs;
+      var toggleableCrosshairs = ch.toggleableCrosshairs;
+      var crosshairsDamageFlashColor = ch.crosshairsDamageFlashColor;
 
       console.log(crosshairs);
 
@@ -341,28 +380,91 @@ class hud {
 
       var hudlayoutPath = path.join(this.dest, 'scripts/hudlayout.res');
       var hudlayout = fs.readFileSync(hudlayoutPath, 'utf8');
+      
+      // toggleable crosshairs
+      if (toggleableCrosshairs.length > 0) {
+        var hatiPath = path.join(this.dest, 'resource/ui/HudAchievementTrackerItem.res');
+        var hati = fs.readFileSync("./app/assets/achievements.res", 'utf8');
+        
+        hati = hati.replace('// crosshairs', toggleableCrosshairs);
+        fs.writeFileSync(hatiPath, hati);
+        
+        var trackerIndex = hudlayout.indexOf(`"HudAchievementTracker"`);
+        var openIndex = hudlayout.substr(trackerIndex).indexOf("{");
+        var closeIndex = hudlayout.substr(trackerIndex).indexOf("}");
+        
+        var oidx = trackerIndex+openIndex;
+        var cidx = trackerIndex+closeIndex+1;
+        var start = hudlayout.substr(0, oidx);
+        var end = hudlayout.substr(cidx);
+        
+        var newTracker = `{
+          "ControlName"   "EditablePanel"
+          "fieldName"             "HudAchievementTracker"
+          "xpos"                  "0"
+          "NormalY"               "0"
+          "EngineerY"             "0"
+          "wide"                  "f0"
+          "tall"                  "480"
+          "visible"               "1"
+          "enabled"               "1"    
+          "zpos"                  "1"
+        }`;
+        
+        hudlayout = start + newTracker + end;
+      }
+      
+      // transparent viewmodels
+      if (settings.styles.transparentViewmodels) {
+        var dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH, './materials/vgui/replay/thumbnails/');
+        var src = path.join(__dirname, '../assets/vtf/');
+        
+        if (!fs.existsSync(dest)) {
+          console.log('making dir -> ' + dest);
+          fs.mkdirSync(dest);
+        }
+        
+        fs.copyFileSync(path.join(src, "REFRACTnormal_transparent.vmt"), path.join(dest, "REFRACTnormal_transparent.vmt"));
+        fs.copyFileSync(path.join(src, "REFRACTnormal_transparent.vtf"), path.join(dest, "REFRACTnormal_transparent.vtf"));
+        
+        crosshairs += `
+        "TransparentViewmodelMask"
+        {
+          //alpha doesn't work for this, you need to change the texture's alpha
+          "ControlName"	"ImagePanel"
+          "fieldName"		"TransparentViewmodelMask"
+          "xpos"			"0"
+          "ypos"			"0"
+          "zpos"			"-100"
+          "wide"			"f0"
+          "tall"			"480"
+          "visible"		"1"
+          "enabled"		"1"
+          "image"			"replay/thumbnails/REFRACTnormal_transparent"
+          "scaleImage"	"1"
+        }
+        `;
+      }
+      
       hudlayout = hudlayout.replace('// KNUCKLESCROSSES', crosshairs);
       fs.writeFileSync(hudlayoutPath, hudlayout);
-
+      
       // crosshair's damage flash color
-      var crosshairDamageFlashColorPath = path.join(this.dest, 'scripts/hudanimations_ahud.txt');
+      var crosshairDamageFlashColorPath = path.join(this.dest, 'scripts/hudanimations_misc.txt');
       var chDmgFlashColors = fs.readFileSync(crosshairDamageFlashColorPath, 'utf8');
       console.log('DAMAGE FLASH' + crosshairsDamageFlashColor);
-      chDmgFlashColors = chDmgFlashColors.replace(/Animate[\s]+KnucklesCrosses[\s]+FgColor[\s]+"CrosshairDamage"[\s]+Linear[\s]+0.0[\s]+0.0/g, crosshairsDamageFlashColor);
       
-      fs.writeFileSync(crosshairDamageFlashColorPath, chDmgFlashColors);
+      var hidx = chDmgFlashColors.indexOf(`event HitMarker`);
+      if (hidx >= 0) {
+        var openIndex = chDmgFlashColors.substr(hidx).indexOf("{");
+        var oidx = openIndex + hidx + 1;
+        var start = chDmgFlashColors.substr(0, oidx);
+        var end = chDmgFlashColors.substr(oidx);
 
-      // crosshair's fonts
-      var crosshairsFontsPath = path.join(this.dest, 'resource/scheme/xhairs.res');
-      fs.writeFileSync(crosshairsFontsPath, `
-      Scheme
-      {
-        Fonts
-        {
-          ${crosshairFonts}
-        }
-      }`);
-
+        chDmgFlashColors = start + crosshairsDamageFlashColor + end;
+        fs.writeFileSync(crosshairDamageFlashColorPath, chDmgFlashColors);
+      }
+      
       // colors
       var hudcolorsPath = path.join(this.dest, 'resource/scheme/colors.res');
       var hudcolors = fs.readFileSync(hudcolorsPath, 'utf8');
@@ -432,7 +534,77 @@ class hud {
       }
       
       fs.writeFileSync(hudcolorsPath, hudcolors);
-      cb();
+
+      ////////////////
+      // background //
+      ////////////////
+      if (os.platform() === 'win32') {
+        if (this.settings.background.enabled) {
+          var dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH, './materials/console/');
+          var cproc = require('child_process');
+          var vtfcmdPath = path.join(__dirname, '../assets/vtf/VTFCmd.exe');
+          this.loadingText = 'Converting background image to texture...';
+
+          cproc.execFile(`${vtfcmdPath}`, ['-file', this.settings.background.path, '-resize', '-nomipmaps', '-format', 'dxt1'], (err, stdout, stderr) => {
+            if (err) {
+              alert(err);
+              console.error(err);
+              return;
+            }
+    
+            console.log(stdout);
+            this.loadingText = "";
+            
+            var vtfPath = changeExt(this.settings.background.path, 'vtf');
+            console.log(vtfPath);
+
+            if (fs.existsSync(vtfPath)) {
+              if (!fs.existsSync(dest)) {
+                console.log('making dir -> ' + dest);
+                fs.mkdirSync(dest);
+              }
+
+              var list = [
+                'upward',
+                'gravelpit',
+                '2fort',
+                'mvm',
+              ];
+
+              for (let i in list) {
+                var widescreen = path.join(dest, `background_${list[i]}_widescreen.vtf`);
+                var normal = path.join(dest, `background_${list[i]}.vtf`);
+                console.log(widescreen, normal);
+
+                fs.copyFileSync(vtfPath, widescreen);
+                fs.copyFileSync(vtfPath, normal);
+                console.log('copied background -> ' + list[i]);
+              }
+            }
+
+            cb();
+          });
+        } else {
+          cb();
+        }
+      } else {
+        alert(os.platform() + ' system is not supported!');
+      }
+
+      // background
+      // VTFCmd.exe -file ".\tf2.jpg" -resize -nomipmaps -format "dxt1"
+      // var bgPath = path.join(this.dest, 'resource/console/background_upward_widescreen');
+      // var inputRGABATA = fs.readFileSync('./app/assets/tf2.jpg');
+      // try {
+      //   var outputRGBAData = vtf.fromRGBA(inputRGABATA, 2560, 1440);
+      // } catch (e) {
+      //   console.error(e);
+      // }
+      // var bgDir = path.join(this.dest, 'resource/console/');
+      // if (!fs.existsSync(bgDir)) {
+      //   fs.mkdirSync(bgDir);
+      // }
+      // fs.writeFileSync(bgPath, outputRGBAData);
     });
   }
 
