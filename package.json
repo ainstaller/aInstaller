@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "install-app-deps",
     "start": "electron ./app",
-    "build": "build --win --x64 --prerelease",
+    "build": "build --win --x64",
     "release": "build --win --x64 --publish always"
   },
   "repository": "https://github.com/ainstaller/ainstaller",
@@ -17,19 +17,18 @@
   "license": "MIT",
   "devDependencies": {
     "babel-register": "^6.18.0",
-    "electron": "^2.0.8",
-    "electron-compilers": "^4.0.7"
+    "electron": "^2.0.8"
   },
   "dependencies": {
     "babel-register": "^6.18.0",
-    "electron-compile": "^4.0.4",
+    "electron-compile": "^6.4.3",
+    "electron-compilers": "^4.0.7",
     "electron-json-storage": "^2.0.3",
     "fs-extra": "^1.0.0",
     "node-unzip-2": "^0.2.7"
   },
   "build": {
     "appId": "com.unnoted.ainstaller",
-    "category": "gaming",
     "compression": "maximum",
     "asar": false,
     "win": {
