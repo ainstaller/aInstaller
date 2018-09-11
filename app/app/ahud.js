@@ -298,7 +298,10 @@ class hud {
   }
 
   install(settings, cb) {
+    this.loadingText = 'Downloading ahud...';
+
     this.download(() => {
+      this.loadingText = '';
       console.log('downloaded');
 
       const state = this.state();
@@ -384,7 +387,7 @@ class hud {
       // toggleable crosshairs
       if (toggleableCrosshairs.length > 0) {
         var hatiPath = path.join(this.dest, 'resource/ui/HudAchievementTrackerItem.res');
-        var hati = fs.readFileSync("./app/assets/achievements.res", 'utf8');
+        var hati = fs.readFileSync(path.join(__dirname, "../assets/achievements.res"), 'utf8');
         
         hati = hati.replace('// crosshairs', toggleableCrosshairs);
         fs.writeFileSync(hatiPath, hati);
@@ -418,7 +421,7 @@ class hud {
       if (settings.styles.transparentViewmodels) {
         var dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH, './materials/vgui/replay/thumbnails/');
         var src = path.join(__dirname, '../assets/vtf/');
-        
+
         if (!fs.existsSync(dest)) {
           console.log('making dir -> ' + dest);
           fs.mkdirSync(dest);
