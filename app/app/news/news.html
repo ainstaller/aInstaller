@@ -1,6 +1,7 @@
 <div id="page-news" class="container" ng:init="hideHudMenu = false; show = 'ahud'">
   <div class="menu page full-width">
-    <div class="item right check" ng:class="{ active: show === 'ahud' }" style="margin-right: 40px" ng:click="show = 'ahud'">
+    <div class="item right check" ng:class="{ active: show === 'ahud' }" style="margin-right: 40px"
+      ng:click="show = 'ahud'">
       <span class="label">ahud</span>
     </div>
     <div class="item right check" ng:class="{ active: show === 'ainstaller' }" ng:click="show = 'ainstaller'">
@@ -10,21 +11,33 @@
     <div class="news-item" ng:repeat="item in news" ng:show="show === 'ahud'">
       <h3>{{ item.title }}</h3>
       <div ng:bind-html="item.content"></div>
-      
-      <br/>
-      <hr/>
+
+      <br />
+      <hr />
     </div>
 
     <div ng:show="show === 'ainstaller'">
       <div class="news-item">
+        <h3>aInstaller v2.1.1</h3>
+        <div>
+          <h5>Fixed</h5>
+          <p>- Background video not being loaded</p>
+
+          <h5>Improved</h5>
+          <p>- Crosshair's outline preview</p>
+        </div>
+      </div>
+      <div class="news-item">
         <h3>aInstaller v2.1.0</h3>
         <div>
           <h5>Added</h5>
-          <p>- Toggleable crosshairs, you can now toggle ahud's crosshairs by activating the "Toggleable" option in the crosshair's options and then through the command: 
+          <p>- Toggleable crosshairs, you can now toggle ahud's crosshairs by activating the "Toggleable" option in the
+            crosshair's options and then through the command:
             hud_achievement_tracker (0 or 1) or "bindtoggle button hud_achievement_tracker".</p>
           <p>- Transparent Viewmodels in Styles</p>
           <p>- Custom Menu Background (requires vtfedit v1.3.3 to be working in your computer).</p>
-          <p>- Quick Change Button: you can now update crosshairs without restarting the game, then use hud_reloadscheme to update it in-game.</p>
+          <p>- Quick Change Button: you can now update crosshairs without restarting the game, then use hud_reloadscheme
+            to update it in-game.</p>
           <p>- ahud and ainstaller news.</p>
 
           <h5>Fixed</h5>
