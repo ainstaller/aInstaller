@@ -1,158 +1,175 @@
 <!doctype html>
-<html ng-app="gui"> <!-- ng-strict-di -->
-  <head>
-    <meta charset="utf-8">
-    <title>aInstaller</title>
-    <meta name="description" content="for ahud">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<html ng-app="gui">
+<!-- ng-strict-di -->
 
-    <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
-    <!-- bower:css -->
-    <link rel="stylesheet" href="./bower_components/angular-toastr/dist/angular-toastr.css" />
-    <link rel="stylesheet" href="./bower_components/animate.css/animate.css" />
-    <link rel="stylesheet" href="./bower_components/spectrum/spectrum.css" />
-    <link rel="stylesheet" href="./bower_components/angular-toasty/dist/angular-toasty.css" />
-    <!-- endbower -->
-    <!-- endbuild -->
+<head>
+  <meta charset="utf-8">
+  <title>aInstaller</title>
+  <meta name="description" content="for ahud">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <!-- build:css({.tmp/serve,src}) styles/app.css -->
-    <!-- inject:css -->
-    <link rel="stylesheet" type="text/css" href="./app/icons.less">
-    <link rel="stylesheet" href="./app/index.less">
-    <!-- endinject -->
-    <!-- endbuild -->
+  <!-- build:css({.tmp/serve,src}) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="./bower_components/angular-toastr/dist/angular-toastr.css" />
+  <link rel="stylesheet" href="./bower_components/animate.css/animate.css" />
+  <link rel="stylesheet" href="./bower_components/spectrum/spectrum.css" />
+  <link rel="stylesheet" href="./bower_components/angular-toasty/dist/angular-toasty.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
 
-    <style>
-      .ng-cloak { display: none !important; }
-    </style>
-  </head>
-  <body>
-    <!--[if lt IE 10]>
+  <!-- build:css({.tmp/serve,src}) styles/app.css -->
+  <!-- inject:css -->
+  <link rel="stylesheet" type="text/css" href="./app/icons.less">
+  <link rel="stylesheet" href="./app/index.less">
+  <!-- endinject -->
+  <!-- endbuild -->
+
+  <style>
+    .ng-cloak {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <toasty></toasty>
-    <div id="loading" ng:init="loading = true" ng:show="loading">
-      <h4 class="title afont ashadow absolute-center">ainstaller</h4>
-      <p class="loadingtext absolute-center ng-cloak" ng:show="loadingText.length > 0">{{ loadingText }}</p>
-      <div class="spinner absolute-center">
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
-      </div>
+  <toasty></toasty>
+  <div id="loading" ng:init="loading = true" ng:show="loading">
+    <h4 class="title afont ashadow absolute-center">ainstaller</h4>
+    <p class="loadingtext absolute-center ng-cloak" ng:show="loadingText.length > 0">{{ loadingText }}</p>
+    <div class="spinner absolute-center">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
     </div>
+  </div>
 
-    <div class="content customBackground" ng:style="{'background-image': (customBackground && settings.background.data.length > 0) ? 'url(data:image/png;base64,'+ settings.background.data + ')' : (settings.video ? 'none' : 'url(http://orig10.deviantart.net/4599/f/2012/298/f/a/tf2_alpine_landscape_by_mlebled-d5iwdq8.jpg)') }">
-      <div class="hud-layer" ng:hide="customBackground || hideHud">
-        <!-- crosshair -->
-        <div class="item crosshair" ng:repeat="(name, crosshair) in crosshairs" 
-             ng:if="crosshair.enabled && name != 'list' && name != ''"
-             ng:click="editCrosshair(name)" ng:class="{outline: crosshair.outline}"
-             ng:style="{color: crosshair.color, 'font-size': (crosshairScale*1)*crosshair.size, width: crosshairScale*crosshair.size, height: crosshairScale*crosshair.size }">
-          {{ crosshair.crosshair }}
-        </div>
+  <div class="content customBackground"
+    ng:style="{'background-image': (customBackground && settings.background.data.length > 0) ? 'url(data:image/png;base64,'+ settings.background.data + ')' : (settings.video ? 'none' : 'url(http://orig10.deviantart.net/4599/f/2012/298/f/a/tf2_alpine_landscape_by_mlebled-d5iwdq8.jpg)') }">
+    <div class="hud-layer" ng:hide="customBackground || hideHud">
+      <!-- crosshair -->
+      <div class="item crosshair" ng:repeat="(name, crosshair) in crosshairs"
+        ng:if="crosshair.enabled && name != 'list' && name != ''" ng:click="editCrosshair(name)"
+        ng:class="{outline: crosshair.outline}"
+        ng:style="{color: crosshair.color, 'font-size': (crosshairScale*1)*crosshair.size, width: crosshairScale*crosshair.size, height: crosshairScale*crosshair.size }">
+        {{ crosshair.crosshair }}
+      </div>
 
-        <!-- health -->
-        <div class="health afont ashadow" ng:style="{color: colors.hp.color}">
-          <span ng:class="{buff: color.buff, low: color.low}">
-            <span ng:if="!color.buff && !color.low">175</span>
-            <span ng:if="color.buff" a:flash enabled="color.buff" start="colors.hp_buff" mode="alpha" end="colors.hp_buff" >260</span>
-            <span ng:if="color.low" ng:style="{background: colors.hp_low.color}" >75</span>
-          </span>
-        </div>
-
-        <!-- stickies or metal -->
-        <span ng:show="color.stickies || color.metal" class="afont ashadow holding-ammo" ng:style="color.stickies ? colors.stickies : colors.metal">
-          {{ color.stickies ? 4 : '' }}
-          {{ color.metal ? 200 : '' }}
+      <!-- health -->
+      <div class="health afont ashadow" ng:style="{color: colors.hp.color}">
+        <span ng:class="{buff: color.buff, low: color.low}">
+          <span ng:if="!color.buff && !color.low">175</span>
+          <span ng:if="color.buff" a:flash enabled="color.buff" start="colors.hp_buff" mode="alpha"
+            end="colors.hp_buff">260</span>
+          <span ng:if="color.low" ng:style="{background: colors.hp_low.color}">75</span>
         </span>
-
-        <!-- ammo -->
-        <div class="ammo" ng:hide="color.medic">
-          <span ng:class="{low: color.low}" a:flash enabled="color.low" start="colors.low_ammo_flash_start" end="colors.low_ammo_flash_end">
-            <span class="main-ammo afont ashadow" ng:style="{color: color.no_clip ? colors.ammo_no_clip.color : colors.ammo.color}">
-              {{ color.low ? 2 : 4 }}
-            </span>
-
-            <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}" ng:hide="color.no_clip">
-              {{ color.low ? 0 : 20 }}
-            </span>
-          </span>          
-        </div>
-
-        <!-- uber -->
-        <div class="uber" ng:show="color.medic">
-          <span a:flash enabled="color.medic && color.medic_flash" start="colors.ubercharge_flash_start" end="colors.ubercharge_flash_end">
-            <span ng:style="{'padding-left': color.medic_flash ? '14px' : '30px', 'color': colors.charge_percent.color, 'background-color': color.medic_flash ? 'none' : colors.ubercharge_meter.color, 'width': color.medic_flash ? '220px' : '110px'}" class="percent afont ashadow">
-              {{ color.medic_flash ? 100 : 50 }}%
-            </span>
-          </span>
-        </div>
-
-        <!-- damage and healing -->
-        <div class="damage absolute-center afont ashadow" ng:if="color.damage || color.healing" 
-             ng:style="{color: color.damage ? colors.damage.color : color.healing ? colors.healing.color : '#000','padding-left': randomDamageLeft, 'padding-right': randomDamageRight, 'padding-top': randomDamageTop, 'padding-bottom': randomDamageBottom}">
-          {{ color.damage ? '-' : color.healing ? '+' : '' }}{{ randomDamage }}
-        </div>
-
-        <!-- killstreak -->
-        <div class="killstreak afont ashadow" ng:style="{color: colors.killstreak.color}">
-          5
-        </div>
       </div>
 
-      <div class="sidebar" ng:include="'app/sidebar/sidebar.html'"></div>
-      <div class="page full-width" ui:view></div>
-      <a:video id="bgvideo" />
+      <!-- stickies or metal -->
+      <span ng:show="color.stickies || color.metal" class="afont ashadow holding-ammo"
+        ng:style="color.stickies ? colors.stickies : colors.metal">
+        {{ color.stickies ? 4 : '' }}
+        {{ color.metal ? 200 : '' }}
+      </span>
+
+      <!-- ammo -->
+      <div class="ammo" ng:hide="color.medic">
+        <span ng:class="{low: color.low}" a:flash enabled="color.low" start="colors.low_ammo_flash_start"
+          end="colors.low_ammo_flash_end">
+          <span class="main-ammo afont ashadow"
+            ng:style="{color: color.no_clip ? colors.ammo_no_clip.color : colors.ammo.color}">
+            {{ color.low ? 2 : 4 }}
+          </span>
+
+          <span class="reserve-ammo afont ashadow" ng:style="{color: colors.ammo_reserve.color}"
+            ng:hide="color.no_clip">
+            {{ color.low ? 0 : 20 }}
+          </span>
+        </span>
+      </div>
+
+      <!-- uber -->
+      <div class="uber" ng:show="color.medic">
+        <span a:flash enabled="color.medic && color.medic_flash" start="colors.ubercharge_flash_start"
+          end="colors.ubercharge_flash_end">
+          <span
+            ng:style="{'padding-left': color.medic_flash ? '14px' : '30px', 'color': colors.charge_percent.color, 'background-color': color.medic_flash ? 'none' : colors.ubercharge_meter.color, 'width': color.medic_flash ? '220px' : '110px'}"
+            class="percent afont ashadow">
+            {{ color.medic_flash ? 100 : 50 }}%
+          </span>
+        </span>
+      </div>
+
+      <!-- damage and healing -->
+      <div class="damage absolute-center afont ashadow" ng:if="color.damage || color.healing"
+        ng:style="{color: color.damage ? colors.damage.color : color.healing ? colors.healing.color : '#000','padding-left': randomDamageLeft, 'padding-right': randomDamageRight, 'padding-top': randomDamageTop, 'padding-bottom': randomDamageBottom}">
+        {{ color.damage ? '-' : color.healing ? '+' : '' }}{{ randomDamage }}
+      </div>
+
+      <!-- killstreak -->
+      <div class="killstreak afont ashadow" ng:style="{color: colors.killstreak.color}">
+        5
+      </div>
     </div>
 
-    <!-- build:js(src) scripts/vendor.js -->
-    <!-- bower:js -->
-    <script>
+    <div class="sidebar" ng:include="'app/sidebar/sidebar.html'"></div>
+    <div class="page full-width" ui:view></div>
+    <!-- <a:video id="bgvideo" /> -->
+    <video id="bgvideo" src="./background.mp4" autoplay loop>
+    </video>
+  </div>
+
+  <!-- build:js(src) scripts/vendor.js -->
+  <!-- bower:js -->
+  <script>
     if (typeof module === 'object') {
       window.module = module; module = undefined;
     }
-    </script>
-    <script src="./bower_components/jquery/dist/jquery.js"></script>
-    <script>
+  </script>
+  <script src="./bower_components/jquery/dist/jquery.js"></script>
+  <script>
     if (window.module) {
       module = window.module;
     }
-    </script>
+  </script>
 
-    <script src="./bower_components/jquery-color/jquery.color.js"></script>
-    <script src="./bower_components/angular/angular.js"></script>
-    <script src="./bower_components/angular-animate/angular-animate.js"></script>
-    <script src="./bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="./bower_components/angular-touch/angular-touch.js"></script>
-    <script src="./bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="./bower_components/angular-messages/angular-messages.js"></script>
-    <script src="./bower_components/angular-aria/angular-aria.js"></script>
-    <script src="./bower_components/angular-resource/angular-resource.js"></script>
-    <script src="./bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="./bower_components/malarkey/dist/malarkey.min.js"></script>
-    <script src="./bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
-    <!--<script src="./bower_components/moment/moment.js"></script>-->
-    <script src="./bower_components/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
-    <script src="./bower_components/spectrum/spectrum.js"></script>
-    <script src="./bower_components/angular-toasty/dist/angular-toasty.js"></script>
-    <script src="./bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
+  <script src="./bower_components/jquery-color/jquery.color.js"></script>
+  <script src="./bower_components/angular/angular.js"></script>
+  <script src="./bower_components/angular-animate/angular-animate.js"></script>
+  <script src="./bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="./bower_components/angular-touch/angular-touch.js"></script>
+  <script src="./bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="./bower_components/angular-messages/angular-messages.js"></script>
+  <script src="./bower_components/angular-aria/angular-aria.js"></script>
+  <script src="./bower_components/angular-resource/angular-resource.js"></script>
+  <script src="./bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="./bower_components/malarkey/dist/malarkey.min.js"></script>
+  <script src="./bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+  <!--<script src="./bower_components/moment/moment.js"></script>-->
+  <script src="./bower_components/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
+  <script src="./bower_components/spectrum/spectrum.js"></script>
+  <script src="./bower_components/angular-toasty/dist/angular-toasty.js"></script>
+  <script src="./bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
 
-    <!-- build:js({.tmp/serve,.tmp/partials}) scripts/app.js -->
-    <!-- inject:js -->
-    <script>
+  <!-- build:js({.tmp/serve,.tmp/partials}) scripts/app.js -->
+  <!-- inject:js -->
+  <script>
     var ahud = require('./app/ahud').ahud;
-    </script>
-    <script type="text/javascript" src="app/index.module.js"></script>
-    <!-- endinject -->
+  </script>
+  <script type="text/javascript" src="app/index.module.js"></script>
+  <!-- endinject -->
 
-    <!-- inject:partials -->
-    <!-- angular templates will be automatically converted in js and inserted here -->
-    <!-- endinject -->
-    <!-- endbuild -->
+  <!-- inject:partials -->
+  <!-- angular templates will be automatically converted in js and inserted here -->
+  <!-- endinject -->
+  <!-- endbuild -->
 
-  </body>
+</body>
+
 </html>

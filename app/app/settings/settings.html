@@ -8,18 +8,18 @@
       <input class="text" contenteditable="true" ng:blur="restore()" ng:model="settings.hl2">
     </div>
 
-    <!-- crosshairs -->
-    <div class="item check" ng:click="settings.video = !settings.video; save()">
+    <!-- video -->
+    <!-- <div class="item check" ng:click="settings.video = !settings.video; save()">
       <span class="label">Video</span>
       <div class="icon">
         <i ng:class="{'flaticon-close47': !settings.video, 'flaticon-check52': settings.video}"></i>
       </div>
-    </div>
+    </div> -->
 
-    <div class="item text" ng:show="settings.video">
+    <!-- <div class="item text" ng:show="settings.video">
       <span class="label">Video URL</span>
       <input class="text" contenteditable="true" ng:blur="save()" ng:model="settings.video_url">
-    </div>
+    </div> -->
 
     <!-- auto updater -->
     <div class="item text" ng:click="settings.auto_updater = !settings.auto_updater; save()">
