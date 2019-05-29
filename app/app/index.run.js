@@ -42,14 +42,9 @@ export function runBlock($rootScope, $log, $interval) {
 
       $rootScope.crosshairs = data.crosshairs;
 
-      // if (has) {
-      // $rootScope.settings = data.settings;
-      // } else {
-      // $rootScope.settings = {
-      //   video: true,
-      //   video_url: require("./background.mp4"),
-      // };
-      // }
+      if (has) {
+        $rootScope.settings = data.settings;
+      }
 
       $rootScope.colors = data.colors;
       $rootScope.styles = data.styles;

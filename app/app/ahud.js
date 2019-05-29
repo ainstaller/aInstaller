@@ -1,5 +1,5 @@
 import deepEqual from 'deep-equal';
-import {config} from './config';
+import { config } from './config';
 import unzip from 'node-unzip-2';
 import path from 'path';
 import fs from 'fs-extra';
@@ -25,7 +25,7 @@ class version {
   parse(str) {
     var self = this;
     let m = /v(\d+){0,4}\.(\d+){0,4}/g.exec(str);
-    
+
     m.forEach((match, idx) => {
       if (idx === 1) {
         self.year = match;
@@ -42,7 +42,7 @@ class version {
       return '';
     }
 
-    return 'v' + this.year + '.' + this.month + this.day; 
+    return 'v' + this.year + '.' + this.month + this.day;
   }
 
   empty() {
@@ -73,7 +73,7 @@ class hud {
 
       try {
         mmo = fs.readFileSync(mmoPath, 'utf8');
-      } catch(e) {
+      } catch (e) {
         console.log('currentVersion: hud is not installed!');
       }
 
@@ -99,7 +99,7 @@ class hud {
       console.log(`Got response: ${res.statusCode}`);
 
       res.resume();
-      res.on('data', function(chunk) {
+      res.on('data', function (chunk) {
         data.push(chunk);
       });
 
@@ -175,7 +175,7 @@ class hud {
       //console.log(this.current);
       //console.log(this.latest);
 
-      return this.current.year === this.latest.year && 
+      return this.current.year === this.latest.year &&
         this.current.month === this.latest.month &&
         this.current.day === this.latest.day;
     }
@@ -190,7 +190,7 @@ class hud {
   state(backup, current) {
     if (this.isInstalled()) {
       if (!this.isUpToDate()) {
-        return UPDATE_AVAILABLE; 
+        return UPDATE_AVAILABLE;
       }
 
       return this.isChanged(backup, current) ? CHANGED : INSTALLED;
@@ -207,7 +207,7 @@ class hud {
       fs.emptyDirSync(this.dest);
       this.current = new version();
       console.log('removed hud');
-    } catch(e) {
+    } catch (e) {
       console.log('error removing hud');
       console.error(e);
     }
@@ -285,11 +285,11 @@ class hud {
         break;
 
       } else {
-        var cidx = hudlayout.substr(idx).indexOf('}')+1;
-        hudlayout = hudlayout.substr(0, idx) + hudlayout.substr(idx+cidx);
+        var cidx = hudlayout.substr(idx).indexOf('}') + 1;
+        hudlayout = hudlayout.substr(0, idx) + hudlayout.substr(idx + cidx);
       }
     }
-    
+
     var idx = hudlayout.indexOf('{') + 2;
     hudlayout = hudlayout.substr(0, idx) + crosshairs + hudlayout.substr(idx);
 
@@ -326,13 +326,13 @@ class hud {
 
         fs.copySync(fileName, this.dest);
         console.log('copied');
-      } catch(e) {
+      } catch (e) {
         console.error(e);
       }
 
       // styles - has to be copied first because it can replace animations file
       // chat, charge_meter, scoreboard, nobox(bool)
-      var copyDirList = []; 
+      var copyDirList = [];
 
       // chat
       if (angular.isDefined(settings.styles['chat'])) {
@@ -375,7 +375,7 @@ class hud {
         try {
           fs.copySync(from, this.dest);
           console.log('copied style -> ' + copyDirList[i]);
-        } catch(e) {
+        } catch (e) {
           console.error(e);
         }
       }
@@ -383,24 +383,24 @@ class hud {
 
       var hudlayoutPath = path.join(this.dest, 'scripts/hudlayout.res');
       var hudlayout = fs.readFileSync(hudlayoutPath, 'utf8');
-      
+
       // toggleable crosshairs
       if (toggleableCrosshairs.length > 0) {
         var hatiPath = path.join(this.dest, 'resource/ui/HudAchievementTrackerItem.res');
         var hati = fs.readFileSync(path.join(__dirname, "../assets/achievements.res"), 'utf8');
-        
+
         hati = hati.replace('// crosshairs', toggleableCrosshairs);
         fs.writeFileSync(hatiPath, hati);
-        
+
         var trackerIndex = hudlayout.indexOf(`"HudAchievementTracker"`);
         var openIndex = hudlayout.substr(trackerIndex).indexOf("{");
         var closeIndex = hudlayout.substr(trackerIndex).indexOf("}");
-        
-        var oidx = trackerIndex+openIndex;
-        var cidx = trackerIndex+closeIndex+1;
+
+        var oidx = trackerIndex + openIndex;
+        var cidx = trackerIndex + closeIndex + 1;
         var start = hudlayout.substr(0, oidx);
         var end = hudlayout.substr(cidx);
-        
+
         var newTracker = `{
           "ControlName"   "EditablePanel"
           "fieldName"             "HudAchievementTracker"
@@ -413,10 +413,10 @@ class hud {
           "enabled"               "1"    
           "zpos"                  "1"
         }`;
-        
+
         hudlayout = start + newTracker + end;
       }
-      
+
       // transparent viewmodels
       if (settings.styles.transparentViewmodels) {
         var dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH, './materials/vgui/replay/thumbnails/');
@@ -426,10 +426,10 @@ class hud {
           console.log('making dir -> ' + dest);
           fs.mkdirSync(dest);
         }
-        
+
         fs.copyFileSync(path.join(src, "REFRACTnormal_transparent.vmt"), path.join(dest, "REFRACTnormal_transparent.vmt"));
         fs.copyFileSync(path.join(src, "REFRACTnormal_transparent.vtf"), path.join(dest, "REFRACTnormal_transparent.vtf"));
-        
+
         crosshairs += `
         "TransparentViewmodelMask"
         {
@@ -448,15 +448,15 @@ class hud {
         }
         `;
       }
-      
+
       hudlayout = hudlayout.replace('// KNUCKLESCROSSES', crosshairs);
       fs.writeFileSync(hudlayoutPath, hudlayout);
-      
+
       // crosshair's damage flash color
       var crosshairDamageFlashColorPath = path.join(this.dest, 'scripts/hudanimations_misc.txt');
       var chDmgFlashColors = fs.readFileSync(crosshairDamageFlashColorPath, 'utf8');
       console.log('DAMAGE FLASH' + crosshairsDamageFlashColor);
-      
+
       var hidx = chDmgFlashColors.indexOf(`event HitMarker`);
       if (hidx >= 0) {
         var openIndex = chDmgFlashColors.substr(hidx).indexOf("{");
@@ -467,11 +467,11 @@ class hud {
         chDmgFlashColors = start + crosshairsDamageFlashColor + end;
         fs.writeFileSync(crosshairDamageFlashColorPath, chDmgFlashColors);
       }
-      
+
       // colors
       var hudcolorsPath = path.join(this.dest, 'resource/scheme/colors.res');
       var hudcolors = fs.readFileSync(hudcolorsPath, 'utf8');
-      
+
       console.log(settings.colors);
       for (var i in settings.colors) {
         var color = settings.colors[i];
@@ -499,7 +499,7 @@ class hud {
 
         } else if (i === 'ammo_reserve') {
           name = 'Ammo In Reserve';
-        
+
         } else if (i === 'ammo_no_clip') {
           name = 'Ammo No Clip';
 
@@ -529,20 +529,20 @@ class hud {
 
         } else if (i === 'ubercharge_flash_end') {
           name = 'Ubercharge2';
-        } 
+        }
 
         if (name !== '' && color !== '') {
           hudcolors = hudcolors.replace(new RegExp(`"${name}"(.*)`), `"${name}" "${this.parseColor(color)}"`)
         }
       }
-      
+
       fs.writeFileSync(hudcolorsPath, hudcolors);
 
       ////////////////
       // background //
       ////////////////
       if (os.platform() === 'win32') {
-        if (this.settings.background.enabled) {
+        if (typeof this.settings.background !== "undefined" && this.settings.background.enabled) {
           var dest = path.join(this.steamPath, config.TF_PATH, config.HUD_PATH, './materials/console/');
           var cproc = require('child_process');
           var vtfcmdPath = path.join(__dirname, '../assets/vtf/VTFCmd.exe');
@@ -554,10 +554,10 @@ class hud {
               console.error(err);
               return;
             }
-    
+
             console.log(stdout);
             this.loadingText = "";
-            
+
             var vtfPath = changeExt(this.settings.background.path, 'vtf');
             console.log(vtfPath);
 
@@ -619,9 +619,9 @@ class hud {
 
     color = color.replace(/[rgba()]/g, '');
     var colors = color.split(',');
-    
+
     if (colors.length === 4) {
-      colors[colors.length-1] = ' ' + Math.floor(colors[colors.length-1] * 255);
+      colors[colors.length - 1] = ' ' + Math.floor(colors[colors.length - 1] * 255);
 
     } else if (colors.length === 3) {
       colors.push(' 255');
@@ -639,7 +639,7 @@ class hud {
       console.log('exists');
       cb();
       return; // exists
-    } catch(e) {
+    } catch (e) {
       console.error(e);
     }
 
@@ -657,7 +657,7 @@ class hud {
       console.log(`Got response: ${res.statusCode}`);
 
       res.resume();
-      res.on('data', function(chunk) {
+      res.on('data', function (chunk) {
         file.write(chunk);
       });
 
@@ -680,4 +680,4 @@ class hud {
 }
 
 var ahud = new hud();
-export {ahud};
+export { ahud };
