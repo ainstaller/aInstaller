@@ -7,14 +7,13 @@ https://github.com/ainstaller/aInstaller/releases/latest
 
 
 Preview:
-https://www.youtube.com/watch?v=7pFNmil_Atw
-
+[![aInstaller's preview](https://i.imgur.com/DKEZnxu.png)](https://streamable.com/3djo8)
 
 ### programmers
 
 install dependencies
 ```sh
-npm install -g electron-builder && npm install
+npm install -g electron-builder bower && npm install
 cd app && npm install && bower install
 ```
 
