@@ -11,7 +11,7 @@
   "postinstall": "install-app-deps",
   "repository": "https://github.com/ainstaller/ainstaller",
   "devDependencies": {
-    "electron": "^2.0.8"
+    "electron": "^7.2.4"
   },
   "dependencies": {
     "auto-launch": "^5.0.1",
